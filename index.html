@@ -500,6 +500,8 @@ function generateScores(brand, postContent, channels, criteria, selectedMedia) {
   // Build per-channel suggestions
   const channelSuggestions = {};
   const activeChannels = channels.length > 0 ? channels : ["facebook"];
+  let _sid = 0; // global unique suggestion counter
+  const _id = (ch, prefix) => `${ch}-${prefix}-${++_sid}`;
 
   activeChannels.forEach(ch => {
     channelSuggestions[ch] = [];
@@ -508,7 +510,7 @@ function generateScores(brand, postContent, channels, criteria, selectedMedia) {
     if (scores.voice < 80) {
       if (ch === "facebook") {
         channelSuggestions[ch].push({
-          id: `${ch}-v1`, dimension: "voice", priority: "high", impact: 8,
+          id: _id(ch, "v"), dimension: "voice", priority: "high", impact: 8,
           text: `Facebook audiences respond best to conversational, story-driven posts. "${firstSentence}..." could be more engaging.`,
           reasoning: `Your brand personality is "${brand.voice.personality.join(", ")}" but the opening feels generic. Facebook's algorithm favors posts that generate comments — questions and personal anecdotes drive 2-3x more engagement.`,
           action: "Rewrite the opening as a question or personal story hook",
@@ -517,7 +519,7 @@ function generateScores(brand, postContent, channels, criteria, selectedMedia) {
       }
       if (ch === "instagram") {
         channelSuggestions[ch].push({
-          id: `${ch}-v1`, dimension: "voice", priority: "high", impact: 9,
+          id: _id(ch, "v"), dimension: "voice", priority: "high", impact: 9,
           text: `Instagram captions should lead with a hook in the first line (before "...more"). "${firstSentence}..." may get cut off.`,
           reasoning: `Instagram truncates captions after ~125 characters. Your brand tone is "${brand.voice.tone.join(", ")}" — lead with the most compelling statement to stop the scroll.`,
           action: "Front-load the caption with an attention-grabbing first line",
@@ -526,7 +528,7 @@ function generateScores(brand, postContent, channels, criteria, selectedMedia) {
       }
       if (ch === "linkedin") {
         channelSuggestions[ch].push({
-          id: `${ch}-v1`, dimension: "voice", priority: "medium", impact: 6,
+          id: _id(ch, "v"), dimension: "voice", priority: "medium", impact: 6,
           text: `LinkedIn favors thought leadership and value-driven content. The tone could be more authoritative.`,
           reasoning: `Your brand personality includes "${brand.voice.personality[0]}" — on LinkedIn, framing insights as expertise drives higher engagement. Posts with data or specific takeaways get 3x more shares.`,
           action: "Add a specific insight, statistic, or professional takeaway",
@@ -536,7 +538,7 @@ function generateScores(brand, postContent, channels, criteria, selectedMedia) {
     }
     if (!hasQuestion && scores.voice < 90) {
       channelSuggestions[ch].push({
-        id: `${ch}-v2`, dimension: "voice", priority: "medium", impact: 5,
+        id: _id(ch, "v"), dimension: "voice", priority: "medium", impact: 5,
         text: "Adding a question increases engagement by inviting audience participation.",
         reasoning: `Posts with questions generate 2x more comments. For a "${brand.voice.personality[0]}" brand, this feels natural and on-brand.`,
         action: "Add a question to encourage comments and discussion",
@@ -547,7 +549,7 @@ function generateScores(brand, postContent, channels, criteria, selectedMedia) {
     /* ── Media & Caption Relevance suggestions ── */
     if (!hasMedia) {
       channelSuggestions[ch].push({
-        id: `${ch}-mr1`, dimension: "media", priority: "high", impact: 15,
+        id: _id(ch, "mr"), dimension: "media", priority: "high", impact: 15,
         text: "No media attached — posts with images get 2.3x more engagement than text-only posts.",
         reasoning: `Whether you start with a caption idea or a visual, pairing both creates significantly stronger posts. ${ch === "instagram" ? "Instagram is visual-first — a post without media won't perform." : "Even on text-friendly platforms, visuals stop the scroll."}`,
         action: ch === "instagram" ? "Add at least one high-quality image or video" : "Attach a relevant image, video, or graphic to boost visibility",
@@ -556,7 +558,7 @@ function generateScores(brand, postContent, channels, criteria, selectedMedia) {
     }
     if (hasMedia && mediaRelevanceRatio < 0.2) {
       channelSuggestions[ch].push({
-        id: `${ch}-mr2`, dimension: "media", priority: "high", impact: 10,
+        id: _id(ch, "mr"), dimension: "media", priority: "high", impact: 10,
         text: `Media doesn't appear to match the caption context. Your caption discusses "${topicWords.slice(0, 3).join(", ") || "your topic"}" but the media may not reflect this.`,
         reasoning: `Caption-media mismatch confuses the audience and reduces trust. Whether you wrote the caption first or chose the image first, both should tell the same story. Aligned media-caption posts see 45% higher engagement.`,
         action: "Swap the media to match your caption, or adjust the caption to match the visual",
@@ -565,14 +567,14 @@ function generateScores(brand, postContent, channels, criteria, selectedMedia) {
     }
     if (hasMedia && scores.media < 80) {
       channelSuggestions[ch].push({
-        id: `${ch}-mr3`, dimension: "media", priority: "medium", impact: 6,
+        id: _id(ch, "mr"), dimension: "media", priority: "medium", impact: 6,
         text: `Ensure media uses brand colors (${brand.kit.colors.primary}, ${brand.kit.colors.secondary}) for visual consistency.`,
         reasoning: `Your brand kit defines specific colors and "${brand.kit.fonts.header}" typography. Consistent visual branding across posts increases brand recognition by up to 80%.`,
         action: "Apply brand-colored overlay, frame, or ensure media features brand colors",
       });
       if (ch === "instagram") {
         channelSuggestions[ch].push({
-          id: `${ch}-mr4`, dimension: "media", priority: "medium", impact: 5,
+          id: _id(ch, "mr"), dimension: "media", priority: "medium", impact: 5,
           text: "Instagram carousel posts (2-5 images) get 3x more engagement than single images.",
           reasoning: `Carousels increase time-on-post and get re-shown by the algorithm. A story arc across slides keeps users swiping.`,
           action: "Consider adding 2-5 related images to create a carousel post",
@@ -581,7 +583,7 @@ function generateScores(brand, postContent, channels, criteria, selectedMedia) {
     }
     if (hasMedia && uploadedMedia.length === 0 && stockMedia.length > 0) {
       channelSuggestions[ch].push({
-        id: `${ch}-mr5`, dimension: "media", priority: "low", impact: 3,
+        id: _id(ch, "mr"), dimension: "media", priority: "low", impact: 3,
         text: "Using stock/sample images — original brand photography performs 35% better.",
         reasoning: "Authentic, original content builds trust and brand identity better than generic stock imagery. Audiences can spot stock photos and engage less.",
         action: "Replace stock images with original brand photography when possible",
@@ -593,7 +595,7 @@ function generateScores(brand, postContent, channels, criteria, selectedMedia) {
       const foundCTA = strongCTAs.find(c => contentLower.includes(c)) || softCTAs.find(c => contentLower.includes(c));
       if (!foundCTA) {
         channelSuggestions[ch].push({
-          id: `${ch}-c1`, dimension: "cta", priority: "high", impact: 12,
+          id: _id(ch, "c"), dimension: "cta", priority: "high", impact: 12,
           text: `No clear call-to-action detected. "${lastSentence}..." ends without directing the reader.`,
           reasoning: `Every post should guide the reader to a next step. For a "${brand.voice.personality[0]}" brand, the CTA should feel like a natural invitation, not a hard sell. Posts with CTAs drive 3x more clicks.`,
           action: "Add a clear, on-brand call-to-action",
@@ -601,14 +603,14 @@ function generateScores(brand, postContent, channels, criteria, selectedMedia) {
         });
       } else if (hasStrongCTA) {
         channelSuggestions[ch].push({
-          id: `${ch}-c1`, dimension: "cta", priority: "low", impact: 3,
+          id: _id(ch, "c"), dimension: "cta", priority: "low", impact: 3,
           text: `Good CTA detected ("${foundCTA}") — consider A/B testing with a brand-voice variant for better conversion.`,
           reasoning: `Brand-specific CTAs outperform generic ones by 2x. Your "${brand.voice.tone[0]}" tone suggests a ${brand.voice.tone[0].toLowerCase()} approach would resonate better.`,
           action: "Test a brand-voice-aligned CTA variant",
         });
       } else {
         channelSuggestions[ch].push({
-          id: `${ch}-c1`, dimension: "cta", priority: "medium", impact: 7,
+          id: _id(ch, "c"), dimension: "cta", priority: "medium", impact: 7,
           text: `Soft CTA detected ("${foundCTA}") — upgrading to a specific action increases conversion 2-3x.`,
           reasoning: `Vague CTAs like "visit" or "check" don't create urgency. Replace with specific, action-oriented language that matches your "${brand.voice.tone[0]}" tone.`,
           action: "Replace with a specific, action-oriented CTA",
@@ -618,7 +620,7 @@ function generateScores(brand, postContent, channels, criteria, selectedMedia) {
     }
     if (!hasLink && ch !== "instagram") {
       channelSuggestions[ch].push({
-        id: `${ch}-c2`, dimension: "cta", priority: "medium", impact: 5,
+        id: _id(ch, "c"), dimension: "cta", priority: "medium", impact: 5,
         text: `No link detected — ${ch === "linkedin" ? "LinkedIn posts with links drive traffic but may get less reach" : "adding a link gives readers a clear next step"}.`,
         reasoning: ch === "linkedin" ? "LinkedIn sometimes de-prioritizes posts with links in the algorithm. Consider putting the link in the first comment instead." : "A trackable link helps measure post ROI and drives traffic to your owned properties.",
         action: ch === "linkedin" ? "Add link in the first comment, or use LinkedIn's native article feature" : "Add a relevant link to drive traffic",
@@ -631,7 +633,7 @@ function generateScores(brand, postContent, channels, criteria, selectedMedia) {
       const hasBrandTag = hashtagList.some(h => h.toLowerCase().includes(brandKeywords[0]));
       if (!hasBrandTag) {
         channelSuggestions[ch].push({
-          id: `${ch}-h1`, dimension: "hashtags", priority: "medium", impact: 6,
+          id: _id(ch, "h"), dimension: "hashtags", priority: "medium", impact: 6,
           text: `Missing branded hashtag — add "${brandHashtag}" for brand recall and tracking.`,
           reasoning: `Branded hashtags create a searchable content library and help track UGC. Users who search "${brandHashtag}" see all your posts in one place.`,
           action: `Add ${brandHashtag} to your hashtag set`,
@@ -639,7 +641,7 @@ function generateScores(brand, postContent, channels, criteria, selectedMedia) {
       }
       if (ch === "instagram" && hashtagList.length < 5) {
         channelSuggestions[ch].push({
-          id: `${ch}-h2`, dimension: "hashtags", priority: "medium", impact: 7,
+          id: _id(ch, "h"), dimension: "hashtags", priority: "medium", impact: 7,
           text: `Only ${hashtagList.length} hashtags — Instagram posts perform best with 5-15 relevant hashtags.`,
           reasoning: `Instagram's algorithm uses hashtags for discovery. Mix branded tags, industry tags, and niche community tags. Posts with 11+ targeted hashtags get 79% more engagement.`,
           action: "Add a mix of branded, industry, and niche hashtags (aim for 8-15 total)",
@@ -648,14 +650,14 @@ function generateScores(brand, postContent, channels, criteria, selectedMedia) {
       if (ch === "linkedin") {
         if (hashtagList.length > 5) {
           channelSuggestions[ch].push({
-            id: `${ch}-h2`, dimension: "hashtags", priority: "low", impact: 3,
+            id: _id(ch, "h"), dimension: "hashtags", priority: "low", impact: 3,
             text: `${hashtagList.length} hashtags is too many for LinkedIn — stick to 3-5 highly relevant ones.`,
             reasoning: `LinkedIn's algorithm may flag posts with excessive hashtags as spammy. Focus on 3-5 industry-specific tags your target audience follows.`,
             action: "Reduce to 3-5 targeted professional hashtags",
           });
         } else if (hashtagList.length === 0) {
           channelSuggestions[ch].push({
-            id: `${ch}-h2`, dimension: "hashtags", priority: "medium", impact: 5,
+            id: _id(ch, "h"), dimension: "hashtags", priority: "medium", impact: 5,
             text: "No hashtags on LinkedIn — adding 3-5 relevant ones boosts discoverability.",
             reasoning: "LinkedIn hashtags help your content surface in topic feeds. Industry-specific tags connect you with your professional audience.",
             action: "Add 3-5 industry and topic hashtags",
@@ -664,7 +666,7 @@ function generateScores(brand, postContent, channels, criteria, selectedMedia) {
       }
       if (ch === "facebook" && hashtagList.length > 3) {
         channelSuggestions[ch].push({
-          id: `${ch}-h2`, dimension: "hashtags", priority: "low", impact: 2,
+          id: _id(ch, "h"), dimension: "hashtags", priority: "low", impact: 2,
           text: `Facebook posts don't benefit much from heavy hashtag use. Keep to 1-3 max.`,
           reasoning: "Unlike Instagram, Facebook's algorithm doesn't heavily weight hashtags for discovery. Too many hashtags look spammy and reduce perceived quality.",
           action: "Reduce to 1-3 focused hashtags or remove entirely",
@@ -677,7 +679,7 @@ function generateScores(brand, postContent, channels, criteria, selectedMedia) {
     const ideal = channelLengths[ch] || { min: 30, max: 150, name: "30-150" };
     if (words.length > ideal.max) {
       channelSuggestions[ch].push({
-        id: `${ch}-s1`, dimension: "structure", priority: ch === "twitter" ? "high" : "medium", impact: ch === "twitter" ? 10 : 5,
+        id: _id(ch, "s"), dimension: "structure", priority: ch === "twitter" ? "high" : "medium", impact: ch === "twitter" ? 10 : 5,
         text: `At ${words.length} words, this post is long for ${ch}. Optimal length is ${ideal.name} words.`,
         reasoning: ch === "twitter" ? "X/Twitter's 280-character limit means ruthless editing. Distill to your single strongest statement." : `${ch === "facebook" ? "Facebook's 'See more' truncation kicks in around 480 characters." : ch === "linkedin" ? "LinkedIn shows ~210 characters before truncation on mobile." : "Shorter captions often outperform longer ones."} Trim to the most impactful message.`,
         action: `Trim to ${ideal.name} words for ${ch}`,
@@ -685,7 +687,7 @@ function generateScores(brand, postContent, channels, criteria, selectedMedia) {
     }
     if (words.length < ideal.min && words.length > 0) {
       channelSuggestions[ch].push({
-        id: `${ch}-s1`, dimension: "structure", priority: "medium", impact: 4,
+        id: _id(ch, "s"), dimension: "structure", priority: "medium", impact: 4,
         text: `At ${words.length} words, this caption may be too brief for ${ch}. Aim for ${ideal.name} words.`,
         reasoning: `Very short captions lack context and don't give the algorithm enough signal to categorize your content. Add value, context, or a story to increase engagement.`,
         action: `Expand the caption to at least ${ideal.min} words with relevant context`,
@@ -693,7 +695,7 @@ function generateScores(brand, postContent, channels, criteria, selectedMedia) {
     }
     if (sentenceCount === 1 && words.length > 25) {
       channelSuggestions[ch].push({
-        id: `${ch}-s2`, dimension: "structure", priority: "medium", impact: 4,
+        id: _id(ch, "s"), dimension: "structure", priority: "medium", impact: 4,
         text: "Single run-on sentence detected — breaking into 2-3 sentences improves readability.",
         reasoning: "Social media users scan content quickly. Shorter sentences with clear breaks improve comprehension and keep readers engaged.",
         action: "Break into 2-3 shorter sentences with a clear flow",
@@ -701,7 +703,7 @@ function generateScores(brand, postContent, channels, criteria, selectedMedia) {
     }
     if (lineBreaks === 0 && words.length > 50) {
       channelSuggestions[ch].push({
-        id: `${ch}-s3`, dimension: "structure", priority: "low", impact: 3,
+        id: _id(ch, "s"), dimension: "structure", priority: "low", impact: 3,
         text: "No line breaks — adding whitespace between ideas improves scannability.",
         reasoning: "Wall-of-text posts get scrolled past. Use line breaks to create visual breathing room, especially on mobile where screen width is narrow.",
         action: "Add line breaks between key ideas or after the hook",
@@ -709,7 +711,7 @@ function generateScores(brand, postContent, channels, criteria, selectedMedia) {
     }
     if (capsRatio > 0.5 && content.length > 20) {
       channelSuggestions[ch].push({
-        id: `${ch}-s4`, dimension: "structure", priority: "medium", impact: 5,
+        id: _id(ch, "s"), dimension: "structure", priority: "medium", impact: 5,
         text: "Excessive use of ALL CAPS — this reads as shouting and reduces credibility.",
         reasoning: "All-caps text is harder to read and feels aggressive. Most platforms' algorithms may also down-rank all-caps content.",
         action: "Use sentence case and save caps for 1-2 key emphasis words at most",
@@ -717,7 +719,7 @@ function generateScores(brand, postContent, channels, criteria, selectedMedia) {
     }
     if (!hasEmoji && (ch === "facebook" || ch === "instagram")) {
       channelSuggestions[ch].push({
-        id: `${ch}-s5`, dimension: "structure", priority: "low", impact: 2,
+        id: _id(ch, "s"), dimension: "structure", priority: "low", impact: 2,
         text: `No emojis used — moderate emoji usage increases engagement on ${ch} by ~15%.`,
         reasoning: `Emojis add personality and visual breaks. For a "${brand.voice.personality[0]}" brand, 2-3 relevant emojis complement the tone without looking unprofessional.`,
         action: "Add 2-3 relevant emojis to highlight key points or emotions",
@@ -727,7 +729,7 @@ function generateScores(brand, postContent, channels, criteria, selectedMedia) {
     /* ── Positive feedback ── */
     if (scores.voice >= 80) {
       channelSuggestions[ch].push({
-        id: `${ch}-pos-v`, dimension: "voice", priority: "none", impact: 0,
+        id: _id(ch, "pos"), dimension: "voice", priority: "none", impact: 0,
         text: `Strong brand voice — the "${brand.voice.personality[0]}" personality comes through clearly.`,
         reasoning: `The language, sentence structure, and emotional tone closely match your brand voice guidelines.`,
         type: "positive",
@@ -735,7 +737,7 @@ function generateScores(brand, postContent, channels, criteria, selectedMedia) {
     }
     if (scores.media >= 80 && hasMedia) {
       channelSuggestions[ch].push({
-        id: `${ch}-pos-m`, dimension: "media", priority: "none", impact: 0,
+        id: _id(ch, "pos"), dimension: "media", priority: "none", impact: 0,
         text: `Good media-caption alignment — the visual supports the written message.`,
         reasoning: `Media and caption work together to tell a cohesive brand story. ${uploadedMedia.length > 0 ? "Original brand photography adds authenticity." : ""}`,
         type: "positive",
@@ -743,7 +745,7 @@ function generateScores(brand, postContent, channels, criteria, selectedMedia) {
     }
     if (scores.structure >= 80) {
       channelSuggestions[ch].push({
-        id: `${ch}-pos-s`, dimension: "structure", priority: "none", impact: 0,
+        id: _id(ch, "pos"), dimension: "structure", priority: "none", impact: 0,
         text: `Well-structured content — good length and readability for ${ch}.`,
         reasoning: `Post length, formatting, and readability are optimized for this channel's audience expectations.`,
         type: "positive",
@@ -907,43 +909,56 @@ function TagInput({ selected, options, onChange, placeholder }) {
 /* ════════════════════════════════════════════════════════════════
    SUGGESTION CARD — with reasoning, examples, per-channel
    ════════════════════════════════════════════════════════════════ */
-function SuggestionCard({ s, applied, onApply }) {
+function SuggestionCard({ s, verifyState, onVerify }) {
   const [showDetail, setShowDetail] = useState(false);
   const isPositive = s.type === "positive";
   const prioStyle = { high: { bg: T.redLt, color: T.red, label: "High Impact" }, medium: { bg: T.yellowLt, color: T.yellow, label: "Medium" }, low: { bg: T.gray100, color: T.gray500, label: "Low" }, none: { bg: T.greenLt, color: T.green, label: "" } };
   const ps = prioStyle[s.priority] || prioStyle.low;
+  // verifyState: undefined = not verified, "checking" = spinner, "resolved" = passed, "unresolved" = still an issue
+  const isResolved = verifyState === "resolved";
+  const isChecking = verifyState === "checking";
+  const wasChecked = verifyState === "unresolved";
 
   return (
     <div style={{
-      borderRadius: T.radiusSm, background: applied ? T.greenLt : isPositive ? T.greenLt : T.white,
-      border: `1px solid ${applied ? "#BBF7D0" : isPositive ? "#BBF7D0" : T.gray200}`,
-      overflow: "hidden", transition: "all 0.2s", opacity: applied ? 0.75 : 1,
+      borderRadius: T.radiusSm, background: isResolved ? T.greenLt : isPositive ? T.greenLt : T.white,
+      border: `1px solid ${isResolved ? "#BBF7D0" : isPositive ? "#BBF7D0" : wasChecked ? T.yellowLt : T.gray200}`,
+      overflow: "hidden", transition: "all 0.2s", opacity: isResolved ? 0.75 : 1,
     }}>
       <div style={{ padding: "10px 12px" }}>
         <div style={{ display: "flex", gap: "8px" }}>
           <div style={{ flex: 1 }}>
             <p style={{ fontSize: "13px", color: T.gray700, lineHeight: "19px", margin: 0 }}>
               {isPositive && <CheckCircle2 size={13} color={T.green} style={{ marginRight: 4, verticalAlign: "middle" }} />}
+              {isResolved && <CheckCircle2 size={13} color={T.green} style={{ marginRight: 4, verticalAlign: "middle" }} />}
               {s.text}
             </p>
             <div style={{ display: "flex", gap: "6px", marginTop: "6px", alignItems: "center", flexWrap: "wrap" }}>
-              {s.priority !== "none" && (
+              {s.priority !== "none" && !isResolved && (
                 <span style={{ fontSize: "11px", fontWeight: 500, color: ps.color, background: ps.bg, padding: "1px 7px", borderRadius: "4px" }}>{ps.label}</span>
               )}
-              {s.impact > 0 && <span style={{ fontSize: "11px", color: T.green, fontWeight: 600 }}>+{s.impact} pts</span>}
-              {(s.reasoning || s.example) && (
+              {s.impact > 0 && !isResolved && <span style={{ fontSize: "11px", color: T.green, fontWeight: 600 }}>+{s.impact} pts</span>}
+              {wasChecked && <span style={{ fontSize: "11px", fontWeight: 500, color: T.yellow, background: T.yellowLt, padding: "1px 7px", borderRadius: "4px" }}>Still needs attention</span>}
+              {(s.reasoning || s.example) && !isResolved && (
                 <button onClick={() => setShowDetail(!showDetail)} style={{ fontSize: "11px", color: T.blue, background: "none", border: "none", cursor: "pointer", fontWeight: 500, padding: 0 }}>
                   {showDetail ? "Hide reasoning" : "Why this matters?"}
                 </button>
               )}
             </div>
           </div>
-          {!isPositive && !applied && (
-            <Btn variant="secondary" size="sm" onClick={() => onApply(s.id)} style={{ alignSelf: "flex-start", flexShrink: 0, color: T.blue, fontWeight: 500 }}>Apply</Btn>
+          {!isPositive && !isResolved && !isChecking && (
+            <Btn variant="secondary" size="sm" onClick={() => onVerify(s.id)} style={{ alignSelf: "flex-start", flexShrink: 0, color: T.blue, fontWeight: 500 }}>
+              {wasChecked ? "Re-check" : "Verify"}
+            </Btn>
           )}
-          {applied && (
+          {isChecking && (
+            <div style={{ alignSelf: "center", flexShrink: 0, padding: "4px 8px" }}>
+              <RefreshCw size={14} color={T.blue} style={{ animation: "spin 1s linear infinite" }} />
+            </div>
+          )}
+          {isResolved && (
             <div style={{ alignSelf: "center", display: "flex", alignItems: "center", gap: "3px", color: T.green, fontSize: "12px", fontWeight: 500, flexShrink: 0 }}>
-              <Check size={14} /> Done
+              <Check size={14} /> Resolved
             </div>
           )}
         </div>
@@ -1404,9 +1419,11 @@ function BrandIdentityPage({ brands, setBrands, onNavigate }) {
 }
 
 /* ── Dimension Accordion (extracted for hooks compliance) ── */
-function DimensionAccordion({ criterion, score, suggestions, applied, onApply }) {
+function DimensionAccordion({ criterion, score, suggestions, verifyStates, onVerify }) {
   const [exp, setExp] = useState(score < 70);
   const color = score >= 80 ? T.green : score >= 60 ? T.yellow : T.red;
+  const resolvedCount = suggestions.filter(s => verifyStates[s.id] === "resolved").length;
+  const totalActionable = suggestions.filter(s => s.type !== "positive").length;
   return (
     <div style={{ borderRadius: T.radiusSm, border: `1px solid ${T.gray200}`, overflow: "hidden", background: T.white }}>
       <button onClick={() => setExp(!exp)} style={{ width: "100%", display: "flex", alignItems: "center", gap: "10px", padding: "11px 12px", background: "none", border: "none", cursor: "pointer", textAlign: "left" }}>
@@ -1414,6 +1431,7 @@ function DimensionAccordion({ criterion, score, suggestions, applied, onApply })
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "3px" }}>
             <span style={{ fontSize: "13px", fontWeight: 600, color: T.gray800 }}>{criterion.label}</span>
             <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+              {resolvedCount > 0 && <span style={{ fontSize: "10px", color: T.green, fontWeight: 500 }}>{resolvedCount}/{totalActionable}</span>}
               <span style={{ fontSize: "11px", color: T.gray400 }}>{criterion.weight}%</span>
               <span style={{ fontSize: "13px", fontWeight: 700, color }}>{score}</span>
             </div>
@@ -1426,7 +1444,7 @@ function DimensionAccordion({ criterion, score, suggestions, applied, onApply })
         <div style={{ padding: "0 12px 12px", display: "flex", flexDirection: "column", gap: "6px", borderTop: `1px solid ${T.gray100}` }}>
           <div style={{ height: "8px" }} />
           {suggestions.map(s => (
-            <SuggestionCard key={s.id} s={s} applied={applied.has(s.id)} onApply={onApply} />
+            <SuggestionCard key={s.id} s={s} verifyState={verifyStates[s.id]} onVerify={onVerify} />
           ))}
         </div>
       )}
@@ -1442,7 +1460,7 @@ function BrandScoreContent({ brands, postContent, channels, selectedMedia, onOpe
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [scoreData, setScoreData] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [applied, setApplied] = useState(new Set());
+  const [verifyStates, setVerifyStates] = useState({}); // { [suggestionId]: "checking" | "resolved" | "unresolved" }
   const [activeTab, setActiveTab] = useState("score");
   const [channelFilter, setChannelFilter] = useState("all");
   const [criteria, setCriteria] = useState(DEFAULT_CRITERIA);
@@ -1450,7 +1468,7 @@ function BrandScoreContent({ brands, postContent, channels, selectedMedia, onOpe
 
   const runScoring = useCallback(() => {
     setLoading(true);
-    setApplied(new Set());
+    setVerifyStates({});
     setTimeout(() => {
       setScoreData(generateScores(selectedBrand, postContent, channels, criteria, selectedMedia));
       setLoading(false);
@@ -1461,7 +1479,37 @@ function BrandScoreContent({ brands, postContent, channels, selectedMedia, onOpe
     if (!scoreData) runScoring();
   }, []);
 
-  const handleApply = (id) => setApplied(prev => { const n = new Set(prev); n.add(id); return n; });
+  const handleVerify = (id) => {
+    // Step 1: Show checking state
+    setVerifyStates(prev => ({ ...prev, [id]: "checking" }));
+    // Step 2: After a mock delay, re-evaluate the suggestion against current content
+    setTimeout(() => {
+      const suggestion = allSuggestions.find(s => s.id === id);
+      if (!suggestion) { setVerifyStates(prev => ({ ...prev, [id]: "resolved" })); return; }
+      // Mock re-evaluation: check if the user has addressed the suggestion
+      const content = postContent || "";
+      const contentLower = content.toLowerCase();
+      let resolved = false;
+      const dim = suggestion.dimension;
+      if (dim === "voice") {
+        // Check if a question was added or content is more engaging
+        resolved = /\?/.test(content) || content.length > 100;
+      } else if (dim === "media") {
+        // Check if media was added
+        resolved = selectedMedia && selectedMedia.length > 0;
+      } else if (dim === "cta") {
+        // Check for CTAs or links
+        const ctas = ["shop","book","sign up","learn more","discover","visit","check","click","tap","try","follow","join","share","get started"];
+        resolved = ctas.some(c => contentLower.includes(c)) || contentLower.includes("http") || contentLower.includes("www");
+      } else if (dim === "hashtags") {
+        resolved = (content.match(/#\w+/g) || []).length >= 3;
+      } else if (dim === "structure") {
+        const words = content.split(/\s+/).filter(Boolean);
+        resolved = words.length >= 20 && words.length <= 250 && content.includes("\n");
+      }
+      setVerifyStates(prev => ({ ...prev, [id]: resolved ? "resolved" : "unresolved" }));
+    }, 1200);
+  };
 
   const allSuggestions = useMemo(() => {
     if (!scoreData) return [];
@@ -1471,8 +1519,8 @@ function BrandScoreContent({ brands, postContent, channels, selectedMedia, onOpe
   }, [scoreData, channelFilter]);
 
   const actionable = allSuggestions.filter(s => s.type !== "positive");
-  const appliedCount = actionable.filter(s => applied.has(s.id)).length;
-  const estimatedGain = actionable.filter(s => applied.has(s.id)).reduce((a, s) => a + (s.impact || 0), 0);
+  const resolvedCount = actionable.filter(s => verifyStates[s.id] === "resolved").length;
+  const estimatedGain = actionable.filter(s => verifyStates[s.id] === "resolved").reduce((a, s) => a + (s.impact || 0), 0);
 
   return (
     <>
@@ -1573,7 +1621,7 @@ function BrandScoreContent({ brands, postContent, channels, selectedMedia, onOpe
                 <ScoreGauge score={scoreData.overall} />
                 <p style={{ fontSize: "12px", color: T.gray500, marginTop: "6px", textAlign: "center", lineHeight: "17px" }}>
                   Your post is <strong style={{ color: T.gray700 }}>{scoreData.overall >= 80 ? "well aligned" : scoreData.overall >= 60 ? "partially aligned" : "not aligned"}</strong> with {selectedBrand.name}
-                  {appliedCount > 0 && <><br /><span style={{ color: T.green }}>Estimated gain: +{estimatedGain} pts after applying {appliedCount} suggestions</span></>}
+                  {resolvedCount > 0 && <><br /><span style={{ color: T.green }}>Verified: {resolvedCount}/{actionable.length} resolved (+{estimatedGain} pts)</span></>}
                 </p>
               </div>
 
@@ -1608,7 +1656,7 @@ function BrandScoreContent({ brands, postContent, channels, selectedMedia, onOpe
                   {criteria.filter(c => c.enabled).map(c => (
                     <DimensionAccordion key={c.id} criterion={c} score={scoreData.scores[c.id] || 70}
                       suggestions={allSuggestions.filter(s => s.dimension === c.id)}
-                      applied={applied} onApply={handleApply} />
+                      verifyStates={verifyStates} onVerify={handleVerify} />
                   ))}
                 </div>
               )}
@@ -1616,11 +1664,11 @@ function BrandScoreContent({ brands, postContent, channels, selectedMedia, onOpe
               {/* Suggestions tab */}
               {activeTab === "suggestions" && (
                 <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-                  {appliedCount > 0 && (
+                  {resolvedCount > 0 && (
                     <div style={{ display: "flex", alignItems: "center", gap: "6px", padding: "8px 10px", background: T.greenLt, borderRadius: T.radiusSm }}>
                       <TrendingUp size={13} color={T.green} />
                       <span style={{ fontSize: "12px", color: T.greenDk, fontWeight: 500 }}>
-                        {appliedCount}/{actionable.length} applied — est. +{estimatedGain} pts improvement
+                        {resolvedCount}/{actionable.length} verified — est. +{estimatedGain} pts improvement
                       </span>
                     </div>
                   )}
@@ -1631,16 +1679,16 @@ function BrandScoreContent({ brands, postContent, channels, selectedMedia, onOpe
                           {criteria.find(c => c.id === s.dimension)?.label || s.dimension}
                         </span>
                       </div>
-                      <SuggestionCard s={s} applied={applied.has(s.id)} onApply={handleApply} />
+                      <SuggestionCard s={s} verifyState={verifyStates[s.id]} onVerify={handleVerify} />
                     </div>
                   ))}
                 </div>
               )}
 
-              {/* Apply all */}
-              {appliedCount < actionable.length && (
-                <Btn variant="primary" style={{ width: "100%" }} onClick={() => actionable.forEach(s => handleApply(s.id))}>
-                  <Zap size={14} /> Apply All Suggestions
+              {/* Verify all */}
+              {resolvedCount < actionable.length && (
+                <Btn variant="primary" style={{ width: "100%" }} onClick={() => actionable.forEach(s => { if (verifyStates[s.id] !== "resolved") handleVerify(s.id); })}>
+                  <Zap size={14} /> Verify All Suggestions
                 </Btn>
               )}
             </>
