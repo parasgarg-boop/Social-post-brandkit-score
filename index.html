@@ -33,6 +33,7 @@
       color: #991B1B;
       white-space: pre-wrap;
     }
+    @keyframes spin { to { transform: rotate(360deg); } }
   </style>
 </head>
 <body>
@@ -142,6 +143,12 @@
     const Monitor = _i(['M20 3H4a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2V5a2 2 0 00-2-2z', 'M8 21h8', 'M12 17v4']);
     const Clock = _i(['M12 2a10 10 0 100 20 10 10 0 000-20z', 'M12 6v6l4 2']);
     const Send = _i(['M22 2L11 13', 'M22 2l-7 20-4-9-9-4 20-7z']);
+    const ThumbsUp = _i(['M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3H14z', 'M7 22H4a2 2 0 01-2-2v-7a2 2 0 012-2h3']);
+    const Share2 = _i(['M18 8a3 3 0 100-6 3 3 0 000 6z', 'M6 15a3 3 0 100-6 3 3 0 000 6z', 'M18 22a3 3 0 100-6 3 3 0 000 6z', 'M8.59 13.51l6.83 3.98', 'M15.41 6.51l-6.82 3.98']);
+    const Heart = _i('M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z');
+    const Bookmark = _i('M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z');
+    const MoreHorizontal = _i(['M12 13a1 1 0 100-2 1 1 0 000 2z', 'M19 13a1 1 0 100-2 1 1 0 000 2z', 'M5 13a1 1 0 100-2 1 1 0 000 2z']);
+    const Repeat = _i(['M17 1l4 4-4 4', 'M3 11V9a4 4 0 014-4h14', 'M7 23l-4-4 4-4', 'M21 13v2a4 4 0 01-4 4H3']);
 
     /* ════════════════════════════════════════════════════════════════
        DESIGN TOKENS — matched to Birdeye live app
@@ -255,6 +262,73 @@ const DEFAULT_BRANDS = [
 const PERSONALITY_OPTIONS = ["Friendly", "Professional", "Authentic", "Bold", "Playful", "Elegant", "Caring", "Innovative", "Trustworthy", "Expert", "Welcoming", "Confident"];
 const TONE_OPTIONS = ["Persuasive", "Casual", "Simple", "Formal", "Empowering", "Luxurious", "Aspirational", "Informative", "Warm", "Clear", "Energetic", "Empathetic"];
 const FONT_OPTIONS = ["Roboto", "Inter", "Montserrat", "Open Sans", "Lato", "Poppins", "Playfair Display", "Source Sans Pro", "Raleway", "Merriweather"];
+
+/* ════════════════════════════════════════════════════════════════
+   BUSINESS TOKENS & LOCATION DATA
+   ════════════════════════════════════════════════════════════════ */
+const BUSINESS_TOKENS = [
+  { category: "BUSINESS", tokens: [
+    { key: "location_name", label: "Location name", example: "Grand Junction - Northeast" },
+    { key: "address", label: "Address", example: "150, Main Street" },
+    { key: "city", label: "City", example: "Grand Junction" },
+    { key: "state", label: "State", example: "Colorado" },
+    { key: "zip", label: "Zip code", example: "81501" },
+    { key: "phone", label: "Phone number", example: "(970) 555-0142" },
+  ]},
+  { category: "ONLINE", tokens: [
+    { key: "website", label: "Website URL", example: "www.lushlandscaping.com/northeast" },
+    { key: "email", label: "Email", example: "northeast@lushlandscaping.com" },
+    { key: "booking_url", label: "Booking URL", example: "book.lushlandscaping.com/northeast" },
+  ]},
+];
+
+const MOCK_LOCATIONS = [
+  {
+    id: "loc1", name: "Grand Junction - Northeast",
+    values: { location_name: "Grand Junction - Northeast", address: "150, Main Street", city: "Grand Junction", state: "Colorado", zip: "81501", phone: "(970) 555-0142", website: "www.lushlandscaping.com/northeast", email: "northeast@lushlandscaping.com", booking_url: "book.lushlandscaping.com/northeast" },
+    fbPage: "Andrew Blogs", fbAvatar: null,
+    igProfile: "andrew.blogs", igAvatar: null,
+    liPage: "Andrew Garglefield", liAvatar: null,
+    twHandle: "@andrewblogs", twAvatar: null,
+  },
+  {
+    id: "loc2", name: "Mag Mile - Chicago",
+    values: { location_name: "Mag Mile - Chicago", address: "520 N Michigan Ave", city: "Chicago", state: "Illinois", zip: "60611", phone: "(312) 555-0198", website: "www.lushlandscaping.com/chicago", email: "chicago@lushlandscaping.com", booking_url: "book.lushlandscaping.com/chicago" },
+    fbPage: "Lush Chicago", fbAvatar: null,
+    igProfile: "lush.chicago", igAvatar: null,
+    liPage: "Lush Landscaping Chicago", liAvatar: null,
+    twHandle: "@lushchi", twAvatar: null,
+  },
+  {
+    id: "loc3", name: "Hillsdale - South",
+    values: { location_name: "Hillsdale - South", address: "88 Hillsdale Blvd", city: "Hillsdale", state: "New Jersey", zip: "07642", phone: "(201) 555-0273", website: "www.lushlandscaping.com/hillsdale", email: "hillsdale@lushlandscaping.com", booking_url: "book.lushlandscaping.com/hillsdale" },
+    fbPage: "Lush Hillsdale", fbAvatar: null,
+    igProfile: "lush.hillsdale", igAvatar: null,
+    liPage: "Lush Landscaping Hillsdale", liAvatar: null,
+    twHandle: "@lushhills", twAvatar: null,
+  },
+];
+
+/* Resolve tokens in text — replaces {{token_key}} with location values or leaves unresolved */
+function resolveTokens(text, location) {
+  if (!text) return text;
+  return text.replace(/\{\{(\w+)\}\}/g, (match, key) => {
+    if (location && location.values[key] !== undefined) return location.values[key];
+    const allTokens = BUSINESS_TOKENS.flatMap(c => c.tokens);
+    const tok = allTokens.find(t => t.key === key);
+    return tok ? `{{${tok.label}}}` : match;
+  });
+}
+
+/* Channel-specific profile info for a location */
+const CHANNEL_PROFILES = {
+  facebook: { countLabel: "2 pages", getProfile: (loc) => ({ name: loc?.fbPage || "Your Page", avatar: loc?.fbAvatar }) },
+  instagram: { countLabel: "1 profile", getProfile: (loc) => ({ name: loc?.igProfile || "your.profile", avatar: loc?.igAvatar }) },
+  linkedin: { countLabel: "1 page", getProfile: (loc) => ({ name: loc?.liPage || "Your Company", avatar: loc?.liAvatar }) },
+  twitter: { countLabel: "1 account", getProfile: (loc) => ({ name: loc?.twHandle || "@yourhandle", avatar: loc?.twAvatar }) },
+  google: { countLabel: "1 listing", getProfile: (loc) => ({ name: loc?.fbPage || "Your Business", avatar: null }) },
+  tiktok: { countLabel: "1 account", getProfile: (loc) => ({ name: loc?.igProfile || "your.profile", avatar: null }) },
+};
 
 /* ════════════════════════════════════════════════════════════════
    DEFAULT SCORING CRITERIA
@@ -1858,6 +1932,772 @@ function SchedulePickerModal({ onSchedule, onClose, initialDate, initialTime }) 
 
 
 /* ════════════════════════════════════════════════════════════════
+   CHANNEL PREVIEW CARD — renders platform-specific post preview
+   ════════════════════════════════════════════════════════════════ */
+function MediaPreviewGrid({ selectedMedia, brand }) {
+  if (selectedMedia.length > 0) {
+    return (
+      <div style={{ display: "grid", gridTemplateColumns: selectedMedia.length === 1 ? "1fr" : "1fr 1fr", gap: "2px" }}>
+        {selectedMedia.slice(0, 4).map((img, i) => (
+          <div key={img.id} style={{
+            height: selectedMedia.length === 1 ? "160px" : "100px",
+            background: img.isUpload ? T.gray200 : (img.gradient || T.gray200),
+            display: "flex", alignItems: "center", justifyContent: "center",
+            position: "relative", overflow: "hidden",
+          }}>
+            {img.isUpload ? (
+              img.fileType === "video" ? <Monitor size={24} color={T.gray400} /> : <img src={img.dataUrl} alt={img.label} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+            ) : (
+              <span style={{ fontSize: selectedMedia.length === 1 ? "36px" : "24px" }}>{img.emoji}</span>
+            )}
+            {i === 3 && selectedMedia.length > 4 && (
+              <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.5)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <span style={{ color: "white", fontSize: "18px", fontWeight: 700 }}>+{selectedMedia.length - 4}</span>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    );
+  }
+  return (
+    <div style={{ height: "120px", background: `linear-gradient(135deg, ${brand?.kit?.colors?.primary || T.blue}, ${brand?.kit?.colors?.dark || T.gray800})`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <Image size={32} color="rgba(255,255,255,0.5)" />
+    </div>
+  );
+}
+
+function FacebookPreview({ content, profile, brand, selectedMedia }) {
+  return (
+    <div style={{ border: `1px solid ${T.gray200}`, borderRadius: T.radius, overflow: "hidden" }}>
+      <div style={{ padding: "14px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "10px" }}>
+          <div style={{ width: 36, height: 36, borderRadius: "50%", background: brand?.logoColor || T.gray300, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "16px", overflow: "hidden" }}>
+            {profile.avatar ? <img src={profile.avatar} style={{ width: "100%", height: "100%" }} /> : (brand?.logo || "?")}
+          </div>
+          <div>
+            <div style={{ fontSize: "13px", fontWeight: 600, color: T.gray900 }}>{profile.name}</div>
+            <div style={{ fontSize: "11px", color: T.gray500 }}>Just now</div>
+          </div>
+        </div>
+        <p style={{ fontSize: "13px", color: T.gray700, lineHeight: "20px", margin: 0, whiteSpace: "pre-wrap", wordBreak: "break-word" }}>
+          {content.length > 400 ? content.substring(0, 400) + "..." : content}
+        </p>
+      </div>
+      <MediaPreviewGrid selectedMedia={selectedMedia} brand={brand} />
+      {/* Facebook reaction bar */}
+      <div style={{ padding: "8px 14px", borderTop: `1px solid ${T.gray100}`, display: "flex", justifyContent: "space-around" }}>
+        {[{ icon: ThumbsUp, label: "Like" }, { icon: MessageSquare, label: "Comment" }, { icon: Share2, label: "Share" }].map(a => (
+          <div key={a.label} style={{ display: "flex", alignItems: "center", gap: "6px", color: T.gray500, fontSize: "12px", fontWeight: 500 }}>
+            <a.icon size={14} /> {a.label}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function InstagramPreview({ content, profile, brand, selectedMedia }) {
+  return (
+    <div style={{ border: `1px solid ${T.gray200}`, borderRadius: T.radius, overflow: "hidden" }}>
+      {/* IG header */}
+      <div style={{ padding: "10px 14px", display: "flex", alignItems: "center", gap: "10px" }}>
+        <div style={{ width: 30, height: 30, borderRadius: "50%", background: `linear-gradient(135deg, #F58529, #DD2A7B, #8134AF)`, padding: "2px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <div style={{ width: "100%", height: "100%", borderRadius: "50%", background: T.white, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "12px" }}>
+            {brand?.logo || "?"}
+          </div>
+        </div>
+        <span style={{ fontSize: "13px", fontWeight: 600, color: T.gray900 }}>{profile.name}</span>
+        <div style={{ flex: 1 }} />
+        <MoreHorizontal size={16} color={T.gray500} />
+      </div>
+      {/* IG media (always shows) */}
+      <MediaPreviewGrid selectedMedia={selectedMedia} brand={brand} />
+      {/* IG action bar */}
+      <div style={{ padding: "10px 14px 6px", display: "flex", gap: "14px", alignItems: "center" }}>
+        <Heart size={20} color={T.gray800} />
+        <MessageSquare size={20} color={T.gray800} />
+        <Send size={20} color={T.gray800} />
+        <div style={{ flex: 1 }} />
+        <Bookmark size={20} color={T.gray800} />
+      </div>
+      {/* IG caption */}
+      <div style={{ padding: "4px 14px 12px" }}>
+        <p style={{ fontSize: "12px", color: T.gray700, lineHeight: "18px", margin: 0, whiteSpace: "pre-wrap", wordBreak: "break-word" }}>
+          <span style={{ fontWeight: 600, marginRight: "4px" }}>{profile.name}</span>
+          {content.length > 300 ? content.substring(0, 300) + "..." : content}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+function LinkedInPreview({ content, profile, brand, selectedMedia }) {
+  return (
+    <div style={{ border: `1px solid ${T.gray200}`, borderRadius: T.radius, overflow: "hidden" }}>
+      <div style={{ padding: "14px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "10px" }}>
+          <div style={{ width: 40, height: 40, borderRadius: "4px", background: brand?.logoColor || "#0A66C2", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "18px", color: T.white, fontWeight: 700 }}>
+            {profile.avatar ? <img src={profile.avatar} style={{ width: "100%", height: "100%" }} /> : (brand?.logo ? <span>{brand.logo}</span> : profile.name.charAt(0).toUpperCase())}
+          </div>
+          <div>
+            <div style={{ fontSize: "13px", fontWeight: 600, color: T.gray900 }}>{profile.name}</div>
+            <div style={{ fontSize: "11px", color: T.gray500 }}>Just now</div>
+          </div>
+        </div>
+        <p style={{ fontSize: "13px", color: T.gray700, lineHeight: "20px", margin: 0, whiteSpace: "pre-wrap", wordBreak: "break-word" }}>
+          {content.length > 400 ? content.substring(0, 400) + "..." : content}
+        </p>
+      </div>
+      <MediaPreviewGrid selectedMedia={selectedMedia} brand={brand} />
+      {/* LinkedIn reaction bar */}
+      <div style={{ padding: "8px 14px", borderTop: `1px solid ${T.gray100}`, display: "flex", justifyContent: "space-around" }}>
+        {[{ icon: ThumbsUp, label: "Like" }, { icon: MessageSquare, label: "Comment" }, { icon: Repeat, label: "Repost" }, { icon: Send, label: "Send" }].map(a => (
+          <div key={a.label} style={{ display: "flex", alignItems: "center", gap: "5px", color: T.gray500, fontSize: "12px", fontWeight: 500 }}>
+            <a.icon size={14} /> {a.label}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function TwitterPreview({ content, profile, brand, selectedMedia }) {
+  return (
+    <div style={{ border: `1px solid ${T.gray200}`, borderRadius: T.radius, overflow: "hidden", padding: "14px" }}>
+      <div style={{ display: "flex", gap: "10px" }}>
+        <div style={{ width: 36, height: 36, borderRadius: "50%", background: brand?.logoColor || T.gray300, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "16px", flexShrink: 0 }}>
+          {brand?.logo || "?"}
+        </div>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "4px", marginBottom: "4px" }}>
+            <span style={{ fontSize: "13px", fontWeight: 600, color: T.gray900 }}>{profile.name.replace("@", "")}</span>
+            <span style={{ fontSize: "12px", color: T.gray500 }}>{profile.name.startsWith("@") ? profile.name : ""}</span>
+            <span style={{ fontSize: "12px", color: T.gray500 }}>· now</span>
+          </div>
+          <p style={{ fontSize: "13px", color: T.gray700, lineHeight: "20px", margin: "0 0 8px", whiteSpace: "pre-wrap", wordBreak: "break-word" }}>
+            {content.length > 280 ? content.substring(0, 280) + "..." : content}
+          </p>
+          {(selectedMedia.length > 0 || true) && (
+            <div style={{ borderRadius: "12px", overflow: "hidden" }}>
+              <MediaPreviewGrid selectedMedia={selectedMedia} brand={brand} />
+            </div>
+          )}
+          <div style={{ display: "flex", justifyContent: "space-between", marginTop: "10px", maxWidth: "260px" }}>
+            {[MessageSquare, Repeat, Heart, Share2].map((Ic, i) => (
+              <Ic key={i} size={15} color={T.gray400} />
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function GenericChannelPreview({ content, profile, brand, selectedMedia, channel }) {
+  return (
+    <div style={{ border: `1px solid ${T.gray200}`, borderRadius: T.radius, overflow: "hidden" }}>
+      <div style={{ padding: "14px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "10px" }}>
+          <div style={{ width: 36, height: 36, borderRadius: "50%", background: brand?.logoColor || T.gray300, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "16px" }}>
+            {brand?.logo || "?"}
+          </div>
+          <div>
+            <div style={{ fontSize: "13px", fontWeight: 600, color: T.gray900 }}>{profile.name}</div>
+            <div style={{ fontSize: "11px", color: T.gray500 }}>Just now</div>
+          </div>
+        </div>
+        <p style={{ fontSize: "13px", color: T.gray700, lineHeight: "20px", margin: 0, whiteSpace: "pre-wrap", wordBreak: "break-word" }}>
+          {content.length > 400 ? content.substring(0, 400) + "..." : content}
+        </p>
+      </div>
+      <MediaPreviewGrid selectedMedia={selectedMedia} brand={brand} />
+    </div>
+  );
+}
+
+const CHANNEL_PREVIEW_MAP = {
+  facebook: FacebookPreview,
+  instagram: InstagramPreview,
+  linkedin: LinkedInPreview,
+  twitter: TwitterPreview,
+};
+
+
+/* ════════════════════════════════════════════════════════════════
+   AI CONTENT GENERATION — menu actions, mock generation, drawer
+   ════════════════════════════════════════════════════════════════ */
+const AI_MENU = {
+  generate: [
+    { id: "holiday", icon: "🎄", label: "Holiday posts", desc: "Generate seasonal & holiday themed content" },
+    { id: "ideas", icon: "💡", label: "Post ideas", desc: "Get topic suggestions based on your brand" },
+    { id: "hashtags", icon: "#", label: "Hashtags", desc: "Generate relevant hashtags for your post" },
+    { id: "images", icon: "🖼️", label: "Images", desc: "AI-suggested images from Pexels" },
+  ],
+  modify: [
+    { id: "tone", icon: "🎨", label: "Change tone", desc: "Adjust writing style & tone", hasSub: true },
+    { id: "shorter", icon: "📐", label: "Make shorter", desc: "Condense your post while keeping the message" },
+    { id: "longer", icon: "📏", label: "Make longer", desc: "Expand with more detail and engagement" },
+    { id: "grammar", icon: "✓", label: "Fix spelling and grammar", desc: "Clean up typos, grammar, and punctuation" },
+  ],
+  configure: [
+    { id: "prompts", icon: "⚙️", label: "AI prompts", desc: "Manage saved prompt templates", external: true },
+  ],
+};
+
+const TONE_OPTIONS_AI = ["Professional", "Casual", "Friendly", "Bold", "Inspirational", "Humorous", "Urgent", "Empathetic"];
+
+const SUGGESTED_TOPICS = [
+  "Transform your yard into a lush outdoor paradise today",
+  "Professional landscaping design that enhances your property's natural beauty",
+  "Regular maintenance keeps your lawn looking fresh and healthy",
+  "Power washing services reveal your outdoor space's true shine",
+  "Expert lawn mowing for a perfectly manicured yard appearance",
+  "Custom landscape design tailored to your vision and style",
+  "Stunning outdoor living spaces start with quality landscaping care",
+  "Let us handle maintenance while you enjoy your yard",
+  "Beautiful lawns begin with professional landscaping expertise and passion",
+  "Complete outdoor transformation through design, installation, and maintenance services",
+];
+
+/* Mock AI generation — simulates content generation with brand awareness */
+function mockAIGenerate({ mode, prompt, brand, tone, existingContent, briefText, channels }) {
+  const brandName = brand?.name || "your business";
+  const personality = brand?.voice?.personality?.join(", ") || "professional";
+  const toneStyle = tone || brand?.voice?.tone?.[0] || "engaging";
+
+  if (mode === "ideas") {
+    return SUGGESTED_TOPICS;
+  }
+
+  if (mode === "hashtags") {
+    const base = brandName.replace(/[^a-zA-Z]/g, "").toLowerCase();
+    return [
+      `#${base}`, "#landscaping", "#outdoordesign", "#yardtransformation",
+      "#gardendesign", "#outdoorliving", "#lawncare", "#curbeappeal",
+      "#backyardgoals", "#landscapedesign", "#greenthumb", "#yardmakeover",
+    ];
+  }
+
+  if (mode === "shorter" && existingContent) {
+    const sentences = existingContent.split(/[.!?]+/).filter(s => s.trim());
+    return sentences.slice(0, Math.ceil(sentences.length / 2)).join(". ").trim() + ".";
+  }
+
+  if (mode === "longer" && existingContent) {
+    return existingContent + `\n\nAt ${brandName}, we're passionate about delivering results that exceed expectations. Our team of experts is ready to help you achieve your goals. Visit us today or book online to get started!\n\n📞 Call now for a free consultation\n🌐 Link in bio`;
+  }
+
+  if (mode === "grammar" && existingContent) {
+    return existingContent
+      .replace(/\s{2,}/g, " ")
+      .replace(/\bi\b/g, "I")
+      .replace(/\s+([.,!?])/g, "$1");
+  }
+
+  if (mode === "tone" && existingContent) {
+    const toneMap = {
+      "Professional": `We are pleased to share our latest offering at ${brandName}. Our team of dedicated professionals delivers exceptional results tailored to your unique needs. We invite you to experience the difference that expertise and commitment can make. Contact us today to schedule a consultation.`,
+      "Casual": `Hey there! 👋 Just wanted to share something cool from ${brandName}. We've been doing some amazing work lately and honestly? We're pretty proud of it. Come check us out — we'd love to show you what we can do! 😊`,
+      "Friendly": `Hi friends! ☀️ The team at ${brandName} is excited to connect with you! We love what we do, and it shows in every project. Whether you're just starting out or ready for a big change, we're here for you. Let's make something beautiful together! 💚`,
+      "Bold": `🔥 READY FOR A TRANSFORMATION? ${brandName} doesn't just meet expectations — we CRUSH them. Our results speak louder than words. Don't settle for average. Choose excellence. Choose ${brandName}. Your move. 💪`,
+      "Inspirational": `Every great space starts with a vision. At ${brandName}, we believe in the power of transformation — turning ordinary into extraordinary, one project at a time. Your dream space is closer than you think. Let's bring it to life together. ✨`,
+      "Humorous": `Plot twist: your ${brandName.includes("Landscap") ? "yard" : "space"} could actually look AMAZING. 😱 We know, shocking. But seriously — our team works magic (okay, not actual magic, but it's close). Come see for yourself! 😄`,
+      "Urgent": `⏰ LIMITED SPOTS AVAILABLE! ${brandName} is booking fast this season. Don't miss your chance to work with the best. Our calendar fills up quickly — secure your appointment TODAY before it's too late!`,
+      "Empathetic": `We understand — finding the right partner for your project can feel overwhelming. At ${brandName}, we listen first. Your needs, your budget, your timeline — they all matter to us. Let's start with a conversation and go from there. We're in this together. 💛`,
+    };
+    return toneMap[tone] || toneMap["Professional"];
+  }
+
+  // Default: generate from prompt + brief
+  const briefContext = briefText ? ` Drawing on the campaign brief: "${briefText.substring(0, 80)}..."` : "";
+  const promptContext = prompt ? prompt : "Create an engaging social media post";
+  return `Ready to turn your ordinary yard into something amazing? 🌿 [Location name] makes it simple to create the outdoor space you've always dreamed of.${briefContext ? "\n\n" : "\n\n"}Picture stepping outside to your own personal retreat - vibrant plants, perfectly designed layouts, and a space that truly reflects your style. We handle everything from concept to completion, so you can sit back and watch your vision come to life.\n\nOur team brings years of experience and genuine passion for creating beautiful outdoor spaces. We listen to your ideas, work within your budget, and deliver results that exceed expectations.\n\nDon't wait another season to love your yard. Your dream outdoor paradise is closer than you think.\n\nWhat's the one thing you'd love to see in your perfect outdoor space?\n\n#landscaping #outdoordesign #yardtransformation #gardendesign #outdoorliving`;
+}
+
+/* Mock image suggestions */
+const AI_IMAGE_SUGGESTIONS = [
+  { id: "ai1", label: "Lush garden pathway", gradient: "linear-gradient(135deg, #2D8B3A, #7EC87E)", emoji: "🌿", source: "Pexels" },
+  { id: "ai2", label: "Manicured lawn aerial", gradient: "linear-gradient(135deg, #4CAF50, #81C784)", emoji: "🏡", source: "Pexels" },
+  { id: "ai3", label: "Outdoor patio design", gradient: "linear-gradient(135deg, #8D6E63, #BCAAA4)", emoji: "🪴", source: "Pexels" },
+  { id: "ai4", label: "Flower bed closeup", gradient: "linear-gradient(135deg, #E91E63, #F48FB1)", emoji: "🌺", source: "Pexels" },
+  { id: "ai5", label: "Stone walkway", gradient: "linear-gradient(135deg, #78909C, #B0BEC5)", emoji: "🪨", source: "Pexels" },
+  { id: "ai6", label: "Backyard transformation", gradient: "linear-gradient(135deg, #43A047, #A5D6A7)", emoji: "✨", source: "Pexels" },
+];
+
+
+/* ════════════════════════════════════════════════════════════════
+   AI DRAWER — right panel content generation interface
+   ════════════════════════════════════════════════════════════════ */
+function AIDrawerContent({ brands, postContent, channels, selectedMedia, onInsert, onInsertMedia, onBack }) {
+  const [aiMode, setAiMode] = useState(null); // null = menu, "ideas", "generate", "tone", etc.
+  const [selectedBrand, setSelectedBrand] = useState(brands[0]);
+  const [aiPrompt, setAiPrompt] = useState("");
+  const [briefText, setBriefText] = useState("");
+  const [uploadedDocs, setUploadedDocs] = useState([]);
+  const [uploadedRefImages, setUploadedRefImages] = useState([]);
+  const [selectedTone, setSelectedTone] = useState(null);
+  const [includeEmojis, setIncludeEmojis] = useState(true);
+  const [includeHashtags, setIncludeHashtags] = useState(true);
+  const [includeImageSuggestions, setIncludeImageSuggestions] = useState(true);
+  const [generatedContent, setGeneratedContent] = useState(null);
+  const [generatedIdeas, setGeneratedIdeas] = useState(null);
+  const [generatedHashtags, setGeneratedHashtags] = useState(null);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [selectedIdea, setSelectedIdea] = useState(null);
+  const fileInputRef = useRef(null);
+  const imgInputRef = useRef(null);
+
+  const handleGenerate = (mode, opts = {}) => {
+    setIsGenerating(true);
+    setTimeout(() => {
+      const result = mockAIGenerate({
+        mode: mode || "generate",
+        prompt: aiPrompt || opts.prompt,
+        brand: selectedBrand,
+        tone: opts.tone || selectedTone,
+        existingContent: postContent,
+        briefText,
+        channels,
+      });
+      if (mode === "ideas") setGeneratedIdeas(result);
+      else if (mode === "hashtags") setGeneratedHashtags(result);
+      else setGeneratedContent(result);
+      setIsGenerating(false);
+    }, 1500);
+  };
+
+  const handleDocUpload = (e) => {
+    const files = Array.from(e.target.files || []);
+    files.forEach(file => {
+      setUploadedDocs(prev => [...prev, { id: Date.now() + Math.random(), name: file.name, size: (file.size / 1024).toFixed(1) + " KB", type: file.type }]);
+    });
+    e.target.value = "";
+  };
+
+  const handleRefImageUpload = (e) => {
+    const files = Array.from(e.target.files || []);
+    files.forEach(file => {
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        setUploadedRefImages(prev => [...prev, { id: Date.now() + Math.random(), name: file.name, dataUrl: ev.target.result }]);
+      };
+      reader.readAsDataURL(file);
+    });
+    e.target.value = "";
+  };
+
+  const resetAll = () => {
+    setAiMode(null); setGeneratedContent(null); setGeneratedIdeas(null);
+    setGeneratedHashtags(null); setSelectedIdea(null); setAiPrompt("");
+  };
+
+  /* ─── AI Menu (home) ─── */
+  if (!aiMode) {
+    return (
+      <div style={{ flex: 1, overflow: "auto", display: "flex", flexDirection: "column" }}>
+        {/* Header */}
+        <div style={{ padding: "14px 18px", borderBottom: `1px solid ${T.gray100}`, display: "flex", alignItems: "center", gap: "10px", flexShrink: 0 }}>
+          <div style={{ width: 24, height: 24, borderRadius: "6px", background: `linear-gradient(135deg, ${T.blue}, ${T.purple})`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <Sparkles size={13} color={T.white} />
+          </div>
+          <span style={{ fontSize: "14px", fontWeight: 600, color: T.gray900 }}>BirdAI</span>
+        </div>
+
+        <div style={{ flex: 1, overflow: "auto", padding: "12px 18px" }}>
+          {/* Generate section */}
+          <div style={{ marginBottom: "16px" }}>
+            <div style={{ fontSize: "11px", fontWeight: 600, color: T.gray400, textTransform: "uppercase", letterSpacing: "0.5px", marginBottom: "8px" }}>Generate</div>
+            {AI_MENU.generate.map(item => (
+              <button key={item.id} onClick={() => {
+                if (item.id === "ideas") { setAiMode("ideas"); handleGenerate("ideas"); }
+                else if (item.id === "hashtags") { setAiMode("hashtags"); handleGenerate("hashtags"); }
+                else if (item.id === "images") setAiMode("images");
+                else setAiMode("generate");
+              }} style={{
+                width: "100%", display: "flex", alignItems: "center", gap: "10px", padding: "10px 8px",
+                background: "none", border: "none", cursor: "pointer", borderRadius: T.radiusSm, textAlign: "left",
+              }} onMouseOver={e => e.currentTarget.style.background = T.gray50} onMouseOut={e => e.currentTarget.style.background = "none"}>
+                <span style={{ fontSize: "16px", width: "20px", textAlign: "center" }}>{item.icon}</span>
+                <span style={{ fontSize: "13px", fontWeight: 500, color: T.gray800 }}>{item.label}</span>
+              </button>
+            ))}
+          </div>
+
+          {/* Modify section */}
+          <div style={{ marginBottom: "16px" }}>
+            <div style={{ fontSize: "11px", fontWeight: 600, color: T.gray400, textTransform: "uppercase", letterSpacing: "0.5px", marginBottom: "8px" }}>Modify</div>
+            {AI_MENU.modify.map(item => (
+              <button key={item.id} onClick={() => {
+                if (item.id === "tone") setAiMode("tone");
+                else { setAiMode(item.id); handleGenerate(item.id); }
+              }} style={{
+                width: "100%", display: "flex", alignItems: "center", gap: "10px", padding: "10px 8px",
+                background: "none", border: "none", cursor: "pointer", borderRadius: T.radiusSm, textAlign: "left",
+              }} onMouseOver={e => e.currentTarget.style.background = T.gray50} onMouseOut={e => e.currentTarget.style.background = "none"}>
+                <span style={{ fontSize: "16px", width: "20px", textAlign: "center" }}>{item.icon}</span>
+                <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                  <span style={{ fontSize: "13px", fontWeight: 500, color: T.gray800 }}>{item.label}</span>
+                  {item.hasSub && <ChevronRight size={14} color={T.gray400} />}
+                </div>
+              </button>
+            ))}
+          </div>
+
+          {/* Configure section */}
+          <div>
+            <div style={{ fontSize: "11px", fontWeight: 600, color: T.gray400, textTransform: "uppercase", letterSpacing: "0.5px", marginBottom: "8px" }}>Configure</div>
+            {AI_MENU.configure.map(item => (
+              <button key={item.id} style={{
+                width: "100%", display: "flex", alignItems: "center", gap: "10px", padding: "10px 8px",
+                background: "none", border: "none", cursor: "pointer", borderRadius: T.radiusSm, textAlign: "left",
+              }} onMouseOver={e => e.currentTarget.style.background = T.gray50} onMouseOut={e => e.currentTarget.style.background = "none"}>
+                <span style={{ fontSize: "16px", width: "20px", textAlign: "center" }}>{item.icon}</span>
+                <span style={{ fontSize: "13px", fontWeight: 500, color: T.gray800 }}>{item.label}</span>
+                {item.external && <ExternalLink size={12} color={T.gray400} />}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  /* ─── Post Ideas ─── */
+  if (aiMode === "ideas") {
+    return (
+      <div style={{ flex: 1, overflow: "auto", display: "flex", flexDirection: "column" }}>
+        <div style={{ padding: "14px 18px", borderBottom: `1px solid ${T.gray100}`, display: "flex", alignItems: "center", gap: "10px", flexShrink: 0 }}>
+          <button onClick={resetAll} style={{ background: "none", border: "none", cursor: "pointer", display: "flex" }}><ArrowLeft size={18} color={T.gray600} /></button>
+          <span style={{ fontSize: "14px", fontWeight: 600, color: T.gray900, flex: 1 }}>Post ideas</span>
+          <Btn variant={selectedIdea !== null ? "primary" : "secondary"} disabled={selectedIdea === null} onClick={() => { if (selectedIdea !== null) { onInsert(generatedIdeas[selectedIdea]); resetAll(); onBack(); } }}>Insert</Btn>
+        </div>
+        <div style={{ flex: 1, overflow: "auto", padding: "16px 18px" }}>
+          {/* Prompt input */}
+          <div style={{ display: "flex", gap: "8px", marginBottom: "20px", border: `1px solid ${T.gray200}`, borderRadius: T.radiusSm, padding: "8px 12px", alignItems: "center" }}>
+            <input value={aiPrompt} onChange={e => setAiPrompt(e.target.value)} placeholder="Tell BirdAI what you want to create" style={{ flex: 1, border: "none", outline: "none", fontSize: "13px", fontFamily: T.font, color: T.gray700 }}
+              onKeyDown={e => { if (e.key === "Enter") handleGenerate("ideas"); }} />
+            <button onClick={() => handleGenerate("ideas")} style={{ background: aiPrompt ? `linear-gradient(135deg, ${T.blue}, ${T.purple})` : T.gray200, border: "none", borderRadius: "50%", width: 28, height: 28, display: "flex", alignItems: "center", justifyContent: "center", cursor: aiPrompt ? "pointer" : "default" }}>
+              <Send size={13} color={aiPrompt ? T.white : T.gray400} />
+            </button>
+          </div>
+
+          {isGenerating ? (
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "40px" }}>
+              <RefreshCw size={20} color={T.blue} style={{ animation: "spin 1s linear infinite" }} />
+            </div>
+          ) : generatedIdeas && (
+            <>
+              <div style={{ fontSize: "13px", fontWeight: 600, color: T.gray800, marginBottom: "12px" }}>Suggested topics</div>
+              <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                {generatedIdeas.map((idea, i) => (
+                  <button key={i} onClick={() => setSelectedIdea(i)} style={{
+                    width: "100%", textAlign: "left", padding: "12px 14px", background: selectedIdea === i ? T.blueLt : "none",
+                    border: `1px solid ${selectedIdea === i ? T.blue : "transparent"}`, borderRadius: T.radiusSm, cursor: "pointer",
+                    fontSize: "13px", color: T.gray700, lineHeight: "20px",
+                  }} onMouseOver={e => { if (selectedIdea !== i) e.currentTarget.style.background = T.gray50; }}
+                     onMouseOut={e => { if (selectedIdea !== i) e.currentTarget.style.background = "none"; }}>
+                    {idea}
+                  </button>
+                ))}
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  /* ─── Hashtags ─── */
+  if (aiMode === "hashtags") {
+    return (
+      <div style={{ flex: 1, overflow: "auto", display: "flex", flexDirection: "column" }}>
+        <div style={{ padding: "14px 18px", borderBottom: `1px solid ${T.gray100}`, display: "flex", alignItems: "center", gap: "10px", flexShrink: 0 }}>
+          <button onClick={resetAll} style={{ background: "none", border: "none", cursor: "pointer", display: "flex" }}><ArrowLeft size={18} color={T.gray600} /></button>
+          <span style={{ fontSize: "14px", fontWeight: 600, color: T.gray900, flex: 1 }}>Hashtags</span>
+        </div>
+        <div style={{ flex: 1, overflow: "auto", padding: "16px 18px" }}>
+          {isGenerating ? (
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "40px" }}>
+              <RefreshCw size={20} color={T.blue} style={{ animation: "spin 1s linear infinite" }} />
+            </div>
+          ) : generatedHashtags && (
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+              {generatedHashtags.map((tag, i) => (
+                <button key={i} onClick={() => { onInsert(postContent ? postContent + " " + tag : tag); }}
+                  style={{ padding: "6px 14px", background: T.blueLt, color: T.blue, border: `1px solid ${T.blueMd}`, borderRadius: "16px", fontSize: "13px", fontWeight: 500, cursor: "pointer" }}
+                  onMouseOver={e => e.currentTarget.style.background = T.blueMd} onMouseOut={e => e.currentTarget.style.background = T.blueLt}>
+                  {tag}
+                </button>
+              ))}
+            </div>
+          )}
+          <button onClick={() => handleGenerate("hashtags")} style={{ marginTop: "16px", background: "none", border: `1px solid ${T.gray200}`, borderRadius: T.radiusSm, padding: "8px 14px", fontSize: "12px", color: T.gray600, cursor: "pointer", display: "flex", alignItems: "center", gap: "6px" }}>
+            <RefreshCw size={12} /> Regenerate
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  /* ─── Tone selector ─── */
+  if (aiMode === "tone") {
+    return (
+      <div style={{ flex: 1, overflow: "auto", display: "flex", flexDirection: "column" }}>
+        <div style={{ padding: "14px 18px", borderBottom: `1px solid ${T.gray100}`, display: "flex", alignItems: "center", gap: "10px", flexShrink: 0 }}>
+          <button onClick={resetAll} style={{ background: "none", border: "none", cursor: "pointer", display: "flex" }}><ArrowLeft size={18} color={T.gray600} /></button>
+          <span style={{ fontSize: "14px", fontWeight: 600, color: T.gray900, flex: 1 }}>Change tone</span>
+        </div>
+        <div style={{ flex: 1, overflow: "auto", padding: "16px 18px" }}>
+          {!generatedContent ? (
+            <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+              {TONE_OPTIONS_AI.map(t => (
+                <button key={t} onClick={() => { setSelectedTone(t); handleGenerate("tone", { tone: t }); }}
+                  style={{ width: "100%", textAlign: "left", padding: "10px 14px", background: "none", border: `1px solid ${T.gray200}`, borderRadius: T.radiusSm, cursor: "pointer", fontSize: "13px", color: T.gray700 }}
+                  onMouseOver={e => { e.currentTarget.style.background = T.gray50; e.currentTarget.style.borderColor = T.blue; }}
+                  onMouseOut={e => { e.currentTarget.style.background = "none"; e.currentTarget.style.borderColor = T.gray200; }}>
+                  {t}
+                </button>
+              ))}
+            </div>
+          ) : (
+            <>
+              <div style={{ fontSize: "12px", color: T.gray500, marginBottom: "8px" }}>Tone: <strong>{selectedTone}</strong></div>
+              <div style={{ padding: "14px", background: T.gray50, borderRadius: T.radius, border: `1px solid ${T.gray200}`, fontSize: "13px", color: T.gray700, lineHeight: "20px", whiteSpace: "pre-wrap", marginBottom: "14px" }}>
+                {generatedContent}
+              </div>
+              <div style={{ display: "flex", gap: "8px" }}>
+                <Btn variant="primary" onClick={() => { onInsert(generatedContent); resetAll(); onBack(); }}>Insert</Btn>
+                <Btn variant="secondary" onClick={() => setGeneratedContent(null)}>Try another tone</Btn>
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  /* ─── Modify modes (shorter, longer, grammar) ─── */
+  if (["shorter", "longer", "grammar"].includes(aiMode)) {
+    const modeLabels = { shorter: "Make shorter", longer: "Make longer", grammar: "Fix spelling and grammar" };
+    return (
+      <div style={{ flex: 1, overflow: "auto", display: "flex", flexDirection: "column" }}>
+        <div style={{ padding: "14px 18px", borderBottom: `1px solid ${T.gray100}`, display: "flex", alignItems: "center", gap: "10px", flexShrink: 0 }}>
+          <button onClick={resetAll} style={{ background: "none", border: "none", cursor: "pointer", display: "flex" }}><ArrowLeft size={18} color={T.gray600} /></button>
+          <span style={{ fontSize: "14px", fontWeight: 600, color: T.gray900, flex: 1 }}>{modeLabels[aiMode]}</span>
+        </div>
+        <div style={{ flex: 1, overflow: "auto", padding: "16px 18px" }}>
+          {isGenerating ? (
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "40px" }}>
+              <RefreshCw size={20} color={T.blue} style={{ animation: "spin 1s linear infinite" }} />
+            </div>
+          ) : generatedContent ? (
+            <>
+              <div style={{ fontSize: "12px", color: T.gray500, marginBottom: "4px" }}>AI credits remaining: <strong>4 of 5</strong></div>
+              <div style={{ padding: "14px", background: T.blueLt, borderRadius: T.radius, border: `1px solid ${T.blueMd}`, fontSize: "13px", color: T.gray700, lineHeight: "20px", whiteSpace: "pre-wrap", marginBottom: "14px", position: "relative" }}>
+                <div style={{ position: "absolute", top: "8px", left: "8px", width: 18, height: 18, borderRadius: "50%", border: `2px solid ${T.blue}`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <div style={{ width: 10, height: 10, borderRadius: "50%", background: T.blue }} />
+                </div>
+                <div style={{ paddingLeft: "28px" }}>{generatedContent}</div>
+              </div>
+              <div style={{ display: "flex", gap: "8px" }}>
+                <Btn variant="primary" onClick={() => { onInsert(generatedContent); resetAll(); onBack(); }}>Insert</Btn>
+                <Btn variant="secondary" onClick={() => { setGeneratedContent(null); handleGenerate(aiMode); }}>Regenerate</Btn>
+              </div>
+            </>
+          ) : (
+            <p style={{ fontSize: "13px", color: T.gray500 }}>No content to modify. Write some content first.</p>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  /* ─── AI Image suggestions ─── */
+  if (aiMode === "images") {
+    return (
+      <div style={{ flex: 1, overflow: "auto", display: "flex", flexDirection: "column" }}>
+        <div style={{ padding: "14px 18px", borderBottom: `1px solid ${T.gray100}`, display: "flex", alignItems: "center", gap: "10px", flexShrink: 0 }}>
+          <button onClick={resetAll} style={{ background: "none", border: "none", cursor: "pointer", display: "flex" }}><ArrowLeft size={18} color={T.gray600} /></button>
+          <span style={{ fontSize: "14px", fontWeight: 600, color: T.gray900, flex: 1 }}>Image suggestions</span>
+        </div>
+        <div style={{ flex: 1, overflow: "auto", padding: "16px 18px" }}>
+          <p style={{ fontSize: "12px", color: T.gray500, margin: "0 0 14px" }}>Suggested images from <span style={{ color: T.blue, fontWeight: 500 }}>Pexels</span> based on your content</p>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "8px" }}>
+            {AI_IMAGE_SUGGESTIONS.map(img => (
+              <button key={img.id} onClick={() => { onInsertMedia(img); }} style={{
+                background: img.gradient, border: `2px solid transparent`, borderRadius: T.radius, height: "90px",
+                display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", position: "relative", overflow: "hidden",
+              }} onMouseOver={e => e.currentTarget.style.borderColor = T.blue} onMouseOut={e => e.currentTarget.style.borderColor = "transparent"}>
+                <span style={{ fontSize: "28px" }}>{img.emoji}</span>
+                <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, background: "rgba(0,0,0,0.5)", padding: "3px 6px" }}>
+                  <span style={{ fontSize: "10px", color: "white" }}>{img.label}</span>
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  /* ─── Full Generate mode (from prompt + campaign brief) ─── */
+  return (
+    <div style={{ flex: 1, overflow: "auto", display: "flex", flexDirection: "column" }}>
+      {/* Header */}
+      <div style={{ padding: "14px 18px", borderBottom: `1px solid ${T.gray100}`, display: "flex", alignItems: "center", gap: "10px", flexShrink: 0 }}>
+        <button onClick={resetAll} style={{ background: "none", border: "none", cursor: "pointer", display: "flex" }}><ArrowLeft size={18} color={T.gray600} /></button>
+        <span style={{ fontSize: "14px", fontWeight: 600, color: T.gray900, flex: 1 }}>Generate post</span>
+        {generatedContent && <Btn variant="primary" onClick={() => { onInsert(generatedContent); resetAll(); onBack(); }}>Insert</Btn>}
+      </div>
+
+      <div style={{ flex: 1, overflow: "auto", padding: "16px 18px", display: "flex", flexDirection: "column", gap: "16px" }}>
+
+        {/* Prompt */}
+        <div>
+          <label style={{ fontSize: "12px", fontWeight: 600, color: T.gray600, display: "block", marginBottom: "6px" }}>What do you want to create?</label>
+          <div style={{ display: "flex", gap: "8px", border: `1px solid ${T.gray200}`, borderRadius: T.radiusSm, padding: "8px 12px", alignItems: "center" }}>
+            <input value={aiPrompt} onChange={e => setAiPrompt(e.target.value)} placeholder="E.g. Spring lawn care promotion with a seasonal discount"
+              style={{ flex: 1, border: "none", outline: "none", fontSize: "13px", fontFamily: T.font, color: T.gray700 }}
+              onKeyDown={e => { if (e.key === "Enter") handleGenerate("generate"); }} />
+            <button onClick={() => handleGenerate("generate")} style={{ background: `linear-gradient(135deg, ${T.blue}, ${T.purple})`, border: "none", borderRadius: "50%", width: 28, height: 28, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", flexShrink: 0 }}>
+              <Send size={13} color={T.white} />
+            </button>
+          </div>
+        </div>
+
+        {/* Campaign brief */}
+        <div>
+          <label style={{ fontSize: "12px", fontWeight: 600, color: T.gray600, display: "block", marginBottom: "6px" }}>Campaign brief / additional context</label>
+          <textarea value={briefText} onChange={e => setBriefText(e.target.value)} placeholder="Paste your campaign brief, event details, promotion info, or any reference text..."
+            style={{ width: "100%", minHeight: "80px", padding: "10px 12px", border: `1px solid ${T.gray200}`, borderRadius: T.radiusSm, fontSize: "13px", fontFamily: T.font, color: T.gray700, resize: "vertical", outline: "none", boxSizing: "border-box" }} />
+        </div>
+
+        {/* Uploads row */}
+        <div>
+          <label style={{ fontSize: "12px", fontWeight: 600, color: T.gray600, display: "block", marginBottom: "6px" }}>Reference materials</label>
+          <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+            <input type="file" ref={fileInputRef} accept=".pdf,.doc,.docx,.txt" multiple style={{ display: "none" }} onChange={handleDocUpload} />
+            <button onClick={() => fileInputRef.current?.click()} style={{
+              display: "flex", alignItems: "center", gap: "6px", padding: "8px 14px", background: T.gray50,
+              border: `1px dashed ${T.gray300}`, borderRadius: T.radiusSm, cursor: "pointer", fontSize: "12px", color: T.gray600,
+            }}><FileText size={14} color={T.gray500} /> Upload document</button>
+
+            <input type="file" ref={imgInputRef} accept="image/*" multiple style={{ display: "none" }} onChange={handleRefImageUpload} />
+            <button onClick={() => imgInputRef.current?.click()} style={{
+              display: "flex", alignItems: "center", gap: "6px", padding: "8px 14px", background: T.gray50,
+              border: `1px dashed ${T.gray300}`, borderRadius: T.radiusSm, cursor: "pointer", fontSize: "12px", color: T.gray600,
+            }}><Image size={14} color={T.gray500} /> Upload image</button>
+          </div>
+
+          {/* Uploaded files list */}
+          {(uploadedDocs.length > 0 || uploadedRefImages.length > 0) && (
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", marginTop: "8px" }}>
+              {uploadedDocs.map(doc => (
+                <div key={doc.id} style={{ display: "flex", alignItems: "center", gap: "6px", padding: "4px 10px", background: T.gray50, borderRadius: "12px", border: `1px solid ${T.gray200}`, fontSize: "11px", color: T.gray600 }}>
+                  <FileText size={12} color={T.gray500} /> {doc.name}
+                  <button onClick={() => setUploadedDocs(prev => prev.filter(d => d.id !== doc.id))} style={{ background: "none", border: "none", cursor: "pointer", padding: 0, display: "flex" }}><X size={10} color={T.gray400} /></button>
+                </div>
+              ))}
+              {uploadedRefImages.map(img => (
+                <div key={img.id} style={{ display: "flex", alignItems: "center", gap: "6px", padding: "4px 10px", background: T.gray50, borderRadius: "12px", border: `1px solid ${T.gray200}`, fontSize: "11px", color: T.gray600 }}>
+                  <Image size={12} color={T.gray500} /> {img.name}
+                  <button onClick={() => setUploadedRefImages(prev => prev.filter(i => i.id !== img.id))} style={{ background: "none", border: "none", cursor: "pointer", padding: 0, display: "flex" }}><X size={10} color={T.gray400} /></button>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Brand identity selector */}
+        <div>
+          <label style={{ fontSize: "12px", fontWeight: 600, color: T.gray600, display: "block", marginBottom: "6px" }}>Brand identity</label>
+          <div style={{ display: "flex", gap: "8px" }}>
+            {brands.map(b => (
+              <button key={b.id} onClick={() => setSelectedBrand(b)} style={{
+                display: "flex", alignItems: "center", gap: "6px", padding: "6px 12px",
+                background: b.id === selectedBrand.id ? T.blueLt : T.white,
+                border: `1px solid ${b.id === selectedBrand.id ? T.blue : T.gray200}`,
+                borderRadius: T.radiusSm, cursor: "pointer", fontSize: "12px", color: b.id === selectedBrand.id ? T.blue : T.gray700, fontWeight: 500,
+              }}>
+                <span>{b.logo}</span> {b.name}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Options toggles */}
+        <div>
+          <label style={{ fontSize: "12px", fontWeight: 600, color: T.gray600, display: "block", marginBottom: "8px" }}>Include:</label>
+          <div style={{ display: "flex", gap: "14px", flexWrap: "wrap" }}>
+            {[{ label: "Emojis", val: includeEmojis, set: setIncludeEmojis }, { label: "Hashtags", val: includeHashtags, set: setIncludeHashtags }, { label: "Image suggestions", val: includeImageSuggestions, set: setIncludeImageSuggestions }].map(opt => (
+              <label key={opt.label} style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "12px", color: T.gray700, cursor: "pointer" }}>
+                <div onClick={() => opt.set(!opt.val)} style={{
+                  width: 16, height: 16, borderRadius: "3px",
+                  background: opt.val ? T.blue : T.white,
+                  border: `2px solid ${opt.val ? T.blue : T.gray300}`,
+                  display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer",
+                }}>
+                  {opt.val && <Check size={10} color={T.white} />}
+                </div>
+                {opt.label}
+              </label>
+            ))}
+          </div>
+        </div>
+
+        {/* Generated result */}
+        {isGenerating && (
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "30px" }}>
+            <RefreshCw size={20} color={T.blue} style={{ animation: "spin 1s linear infinite" }} />
+            <span style={{ marginLeft: "10px", fontSize: "13px", color: T.gray500 }}>Generating content...</span>
+          </div>
+        )}
+
+        {generatedContent && !isGenerating && (
+          <>
+            <div>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "6px" }}>
+                <span style={{ fontSize: "12px", color: T.gray500 }}>AI credits remaining: <strong>4 of 5</strong></span>
+              </div>
+              <div style={{ padding: "14px", background: T.blueLt, borderRadius: T.radius, border: `1px solid ${T.blueMd}`, fontSize: "13px", color: T.gray700, lineHeight: "20px", whiteSpace: "pre-wrap", position: "relative" }}>
+                <div style={{ position: "absolute", top: "10px", left: "10px", width: 18, height: 18, borderRadius: "50%", border: `2px solid ${T.blue}`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <div style={{ width: 10, height: 10, borderRadius: "50%", background: T.blue }} />
+                </div>
+                <div style={{ paddingLeft: "28px" }}>{generatedContent}</div>
+              </div>
+            </div>
+
+            <div style={{ display: "flex", gap: "8px" }}>
+              <Btn variant="primary" onClick={() => { onInsert(generatedContent); resetAll(); onBack(); }}>Insert</Btn>
+              <Btn variant="secondary" onClick={() => { setGeneratedContent(null); handleGenerate("generate"); }}>Regenerate</Btn>
+            </div>
+
+            {/* Image suggestions */}
+            {includeImageSuggestions && (
+              <div>
+                <div style={{ fontSize: "13px", fontWeight: 600, color: T.gray800, marginBottom: "8px" }}>Suggested images from <span style={{ color: T.blue }}>Pexels</span></div>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "8px" }}>
+                  {AI_IMAGE_SUGGESTIONS.slice(0, 6).map(img => (
+                    <button key={img.id} onClick={() => onInsertMedia(img)} style={{
+                      background: img.gradient, border: `2px solid transparent`, borderRadius: T.radius, height: "80px",
+                      display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", position: "relative", overflow: "hidden",
+                    }} onMouseOver={e => e.currentTarget.style.borderColor = T.blue} onMouseOut={e => e.currentTarget.style.borderColor = "transparent"}>
+                      <span style={{ fontSize: "24px" }}>{img.emoji}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
+
+/* ════════════════════════════════════════════════════════════════
    CREATE POST PAGE
    ════════════════════════════════════════════════════════════════ */
 function CreatePostPage({ brands, onNavigate }) {
@@ -1876,6 +2716,10 @@ function CreatePostPage({ brands, onNavigate }) {
   const [scheduleDate, setScheduleDate] = useState(null);
   const [scheduleTime, setScheduleTime] = useState(null);
   const [scheduleTz, setScheduleTz] = useState(null);
+  const [showTokenPicker, setShowTokenPicker] = useState(false);
+  const [tokenSearch, setTokenSearch] = useState("");
+  const [previewLocation, setPreviewLocation] = useState(null); // null = generic (unresolved tokens)
+  const [expandedChannels, setExpandedChannels] = useState({});
   const emojiAnchorRef = useRef(null);
   const textareaRef = useRef(null);
 
@@ -1904,6 +2748,29 @@ function CreatePostPage({ brands, onNavigate }) {
 
   const handleSchedule = (d, t, tz) => { setScheduleDate(d); setScheduleTime(t); setScheduleTz(tz); };
 
+  const insertToken = (tokenKey) => {
+    const tokenStr = `{{${tokenKey}}}`;
+    const ta = textareaRef.current;
+    if (ta) {
+      const start = ta.selectionStart;
+      const end = ta.selectionEnd;
+      const newText = postContent.substring(0, start) + tokenStr + postContent.substring(end);
+      setPostContent(newText);
+      setTimeout(() => { ta.focus(); ta.selectionStart = ta.selectionEnd = start + tokenStr.length; }, 0);
+    } else {
+      setPostContent(prev => prev + tokenStr);
+    }
+  };
+
+  const toggleChannelExpand = (ch) => setExpandedChannels(prev => ({ ...prev, [ch]: !prev[ch] }));
+
+  // Initialize first channel as expanded
+  useEffect(() => {
+    if (channels.length > 0 && Object.keys(expandedChannels).length === 0) {
+      setExpandedChannels({ [channels[channels.length - 1]]: true });
+    }
+  }, [channels]);
+
   return (
     <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden" }}>
 
@@ -1919,18 +2786,7 @@ function CreatePostPage({ brands, onNavigate }) {
         <span style={{ fontSize: "15px", fontWeight: 600, color: T.gray900 }}>Create post</span>
         <div style={{ flex: 1 }} />
 
-        {/* BRAND SCORE TAB TRIGGER */}
-        <button onClick={() => setRightTab(rightTab === "score" ? "preview" : "score")} style={{
-          display: "flex", alignItems: "center", gap: "6px", padding: "7px 14px",
-          background: rightTab === "score" ? T.blueLt : T.white, border: `1px solid ${rightTab === "score" ? T.blue : T.gray200}`,
-          borderRadius: T.radiusSm, cursor: "pointer", transition: "all 0.2s",
-        }}
-          onMouseOver={e => { if (rightTab !== "score") { e.currentTarget.style.borderColor = T.blue; e.currentTarget.style.background = T.blueLt; }}}
-          onMouseOut={e => { if (rightTab !== "score") { e.currentTarget.style.borderColor = T.gray200; e.currentTarget.style.background = T.white; }}}
-        >
-          <Shield size={15} color={T.blue} />
-          <span style={{ fontSize: "13px", fontWeight: 500, color: rightTab === "score" ? T.blue : T.gray700 }}>Brand Score</span>
-        </button>
+
 
         <label style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "13px", color: T.gray600 }}>
           <div style={{ width: 18, height: 18, borderRadius: "4px", background: T.white, border: `2px solid ${T.gray300}`, display: "flex", alignItems: "center", justifyContent: "center" }} />
@@ -1959,7 +2815,7 @@ function CreatePostPage({ brands, onNavigate }) {
             {channels.map(ch => (
               <span key={ch} style={{ display: "inline-flex", alignItems: "center", gap: "6px", padding: "5px 12px", background: T.gray50, borderRadius: "18px", fontSize: "13px", color: T.gray700, border: `1px solid ${T.gray200}` }}>
                 <ChannelIcon type={ch} />
-                <span style={{ textTransform: "capitalize" }}>{ch === "facebook" ? "2 pages" : ch === "linkedin" ? "1 page" : ch}</span>
+                <span style={{ textTransform: "capitalize" }}>{CHANNEL_PROFILES[ch]?.countLabel || ch}</span>
                 <X size={13} color={T.gray400} style={{ cursor: "pointer" }} onClick={() => removeChannel(ch)} />
               </span>
             ))}
@@ -1971,7 +2827,7 @@ function CreatePostPage({ brands, onNavigate }) {
           {/* Editor tabs */}
           <div style={{ background: T.white, borderRadius: T.radius, border: `1px solid ${T.gray200}`, marginBottom: "8px" }}>
             <div style={{ display: "flex", borderBottom: `2px solid ${T.gray200}` }}>
-              {["Initial content", "Facebook", "LinkedIn"].map(tab => (
+              {["Initial content", ...channels.map(ch => CHANNEL_LIMITS[ch]?.label || ch)].map(tab => (
                 <button key={tab} onClick={() => setActiveEditorTab(tab)} style={{
                   padding: "10px 16px", fontSize: "13px", fontWeight: activeEditorTab === tab ? 600 : 400,
                   color: activeEditorTab === tab ? T.blue : T.gray500, background: "none", border: "none",
@@ -2018,11 +2874,44 @@ function CreatePostPage({ brands, onNavigate }) {
                     {showEmojiPicker && <EmojiPicker anchorRef={emojiAnchorRef} onSelect={(em) => { insertEmoji(em); }} onClose={() => setShowEmojiPicker(false)} />}
                   </div>
                   <button style={{ background: "none", border: "none", cursor: "pointer", display: "flex" }}><Copy size={18} color={T.gray500} /></button>
-                  <button style={{ background: "none", border: "none", cursor: "pointer", display: "flex", padding: "2px 4px", borderRadius: "4px", background: `linear-gradient(135deg, ${T.blue}, ${T.purple})` }}>
+                  <button onClick={() => setRightTab("ai")} style={{ background: "none", border: "none", cursor: "pointer", display: "flex", padding: "2px 4px", borderRadius: "4px", background: `linear-gradient(135deg, ${T.blue}, ${T.purple})` }} title="AI Generate">
                     <Sparkles size={14} color={T.white} />
                   </button>
                 </div>
-                <span style={{ fontSize: "12px", color: T.blue, cursor: "pointer", fontWeight: 500 }}>Personalize &#x25BE;</span>
+                <div style={{ position: "relative" }}>
+                  <button onClick={() => setShowTokenPicker(!showTokenPicker)} style={{ background: "none", border: "none", cursor: "pointer", fontSize: "12px", color: T.blue, fontWeight: 500, display: "flex", alignItems: "center", gap: "4px" }}>
+                    Personalize <ChevronDown size={12} style={{ transform: showTokenPicker ? "rotate(180deg)" : "rotate(0)", transition: "transform 0.2s" }} />
+                  </button>
+                  {showTokenPicker && (
+                    <div style={{ position: "absolute", bottom: "calc(100% + 8px)", right: 0, width: "260px", background: T.white, border: `1px solid ${T.gray200}`, borderRadius: T.radius, boxShadow: T.shadowLg, zIndex: 50, overflow: "hidden" }}>
+                      <div style={{ padding: "10px 12px", borderBottom: `1px solid ${T.gray100}` }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: "8px", padding: "6px 10px", background: T.gray50, borderRadius: T.radiusSm, border: `1px solid ${T.gray200}` }}>
+                          <Search size={14} color={T.gray400} />
+                          <input value={tokenSearch} onChange={e => setTokenSearch(e.target.value)} placeholder="Search tokens" style={{ flex: 1, border: "none", background: "none", outline: "none", fontSize: "13px", fontFamily: T.font, color: T.gray700 }} />
+                        </div>
+                      </div>
+                      <div style={{ maxHeight: "240px", overflow: "auto", padding: "6px 0" }}>
+                        {BUSINESS_TOKENS.map(cat => {
+                          const filtered = cat.tokens.filter(t => !tokenSearch || t.label.toLowerCase().includes(tokenSearch.toLowerCase()));
+                          if (filtered.length === 0) return null;
+                          return (
+                            <div key={cat.category}>
+                              <div style={{ fontSize: "11px", fontWeight: 600, color: T.gray500, padding: "8px 14px 4px", textTransform: "uppercase", letterSpacing: "0.5px" }}>{cat.category}</div>
+                              {filtered.map(tok => (
+                                <button key={tok.key} onClick={() => { insertToken(tok.key); setShowTokenPicker(false); setTokenSearch(""); }} style={{
+                                  width: "100%", textAlign: "left", background: "none", border: "none", cursor: "pointer", padding: "8px 14px", display: "block",
+                                }} onMouseOver={e => e.currentTarget.style.background = T.gray50} onMouseOut={e => e.currentTarget.style.background = "none"}>
+                                  <div style={{ fontSize: "13px", color: T.gray800, fontWeight: 500 }}>{tok.label}</div>
+                                  <div style={{ fontSize: "11px", color: T.gray400, marginTop: "1px" }}>E.g. {tok.example}</div>
+                                </button>
+                              ))}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>
@@ -2101,7 +2990,7 @@ function CreatePostPage({ brands, onNavigate }) {
 
           {/* Tab switcher */}
           <div style={{ display: "flex", padding: "10px 18px 0", gap: "0", borderBottom: `2px solid ${T.gray200}`, flexShrink: 0 }}>
-            {[{ key: "preview", icon: Eye, label: "Preview" }, { key: "score", icon: Shield, label: "Brand Score" }].map(tab => (
+            {[{ key: "preview", icon: Eye, label: "Preview" }, { key: "score", icon: Shield, label: "Brand Score" }, { key: "ai", icon: Sparkles, label: "BirdAI" }].map(tab => (
               <button key={tab.key} onClick={() => setRightTab(tab.key)} style={{
                 display: "flex", alignItems: "center", gap: "6px", padding: "10px 16px", fontSize: "13px", fontWeight: rightTab === tab.key ? 600 : 400,
                 color: rightTab === tab.key ? T.blue : T.gray500, background: "none", border: "none",
@@ -2116,73 +3005,81 @@ function CreatePostPage({ brands, onNavigate }) {
 
           {/* Preview tab content */}
           {rightTab === "preview" && (
-            <div style={{ flex: 1, overflow: "auto", padding: "18px" }}>
-              <div style={{ display: "flex", alignItems: "flex-start", gap: "4px", marginBottom: "16px" }}>
-                <HelpCircle size={13} color={T.gray400} style={{ marginTop: "1px", flexShrink: 0 }} />
-                <p style={{ fontSize: "11px", color: T.gray500, margin: 0, lineHeight: "15px" }}>
-                  This is how your post would appear on social channels where it's posted. Published posts may slightly differ from the preview.
-                </p>
-              </div>
-              {channels.length > 0 ? (
-                <>
-                  <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "14px" }}>
-                    <ChannelIcon type={channels[0]} />
-                    <span style={{ fontSize: "13px", fontWeight: 500, color: T.gray800, textTransform: "capitalize" }}>{channels[0]}</span>
-                    <span style={{ fontSize: "13px", color: T.blue }}>{channels[0] === "facebook" ? "2 Pages" : "1 Page"}</span>
-                    <div style={{ flex: 1 }} />
-                    <ChevronUp size={16} color={T.gray400} />
-                  </div>
-                  <div style={{ border: `1px solid ${T.gray200}`, borderRadius: T.radius, overflow: "hidden" }}>
-                    <div style={{ padding: "14px" }}>
-                      <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "10px" }}>
-                        <div style={{ width: 36, height: 36, borderRadius: "50%", background: brands[0]?.logoColor || T.gray300, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "16px" }}>{brands[0]?.logo || "?"}</div>
-                        <div>
-                          <div style={{ fontSize: "13px", fontWeight: 600, color: T.gray900 }}>{brands[0]?.name || "Your Brand"}</div>
-                          <div style={{ fontSize: "11px", color: T.gray500 }}>Just now</div>
-                        </div>
-                      </div>
-                      <p style={{ fontSize: "13px", color: T.gray700, lineHeight: "20px", margin: 0 }}>
-                        {postContent.length > 280 ? postContent.substring(0, 280) + "..." : postContent}
-                      </p>
-                    </div>
-                    {/* Media preview area */}
-                    {selectedMedia.length > 0 ? (
-                      <div style={{ display: "grid", gridTemplateColumns: selectedMedia.length === 1 ? "1fr" : "1fr 1fr", gap: "2px" }}>
-                        {selectedMedia.slice(0, 4).map((img, i) => (
-                          <div key={img.id} style={{
-                            height: selectedMedia.length === 1 ? "160px" : "100px",
-                            background: img.isUpload ? T.gray200 : (img.gradient || T.gray200),
-                            display: "flex", alignItems: "center", justifyContent: "center",
-                            position: "relative", overflow: "hidden",
-                          }}>
-                            {img.isUpload ? (
-                              img.fileType === "video" ? <Monitor size={24} color={T.gray400} /> : <img src={img.dataUrl} alt={img.label} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-                            ) : (
-                              <span style={{ fontSize: selectedMedia.length === 1 ? "36px" : "24px" }}>{img.emoji}</span>
-                            )}
-                            {i === 3 && selectedMedia.length > 4 && (
-                              <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.5)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                                <span style={{ color: "white", fontSize: "18px", fontWeight: 700 }}>+{selectedMedia.length - 4}</span>
-                              </div>
-                            )}
-                          </div>
-                        ))}
-                      </div>
-                    ) : (
-                      <div style={{ height: "120px", background: `linear-gradient(135deg, ${brands[0]?.kit?.colors?.primary || T.blue}, ${brands[0]?.kit?.colors?.dark || T.gray800})`, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                        <Image size={32} color="rgba(255,255,255,0.5)" />
-                      </div>
-                    )}
-                  </div>
-                </>
-              ) : (
-                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "60px 20px", color: T.gray400 }}>
-                  <div style={{ width: 80, height: 60, background: T.gray100, borderRadius: T.radius, marginBottom: "12px", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    <Monitor size={24} color={T.gray300} />
-                  </div>
-                  <p style={{ fontSize: "13px", textAlign: "center" }}>Select a channel and start creating a post to see a preview.</p>
+            <div style={{ flex: 1, overflow: "auto", display: "flex", flexDirection: "column" }}>
+              {/* Info bar + Location dropdown */}
+              <div style={{ padding: "14px 18px 10px", flexShrink: 0 }}>
+                <div style={{ display: "flex", alignItems: "flex-start", gap: "4px", marginBottom: "12px" }}>
+                  <HelpCircle size={13} color={T.gray400} style={{ marginTop: "1px", flexShrink: 0 }} />
+                  <p style={{ fontSize: "11px", color: T.gray500, margin: 0, lineHeight: "15px" }}>
+                    This is how your post would appear on social channels where it's posted. Published posts may slightly differ from the preview.
+                  </p>
                 </div>
-              )}
+                {/* Location dropdown for token resolution */}
+                <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                  <Globe size={14} color={T.gray500} />
+                  <select value={previewLocation || ""} onChange={e => setPreviewLocation(e.target.value || null)} style={{
+                    flex: 1, padding: "6px 10px", fontSize: "12px", border: `1px solid ${T.gray200}`, borderRadius: T.radiusSm,
+                    fontFamily: T.font, color: T.gray700, background: T.white, cursor: "pointer", outline: "none",
+                  }}>
+                    <option value="">All locations (generic preview)</option>
+                    {MOCK_LOCATIONS.map(loc => (
+                      <option key={loc.id} value={loc.id}>{loc.name}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              {/* Channel previews */}
+              <div style={{ flex: 1, overflow: "auto", padding: "0 18px 18px" }}>
+                {channels.length > 0 ? (
+                  <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                    {channels.map(ch => {
+                      const isExpanded = expandedChannels[ch] !== false;
+                      const chInfo = CHANNEL_PROFILES[ch] || { countLabel: "1 page", getProfile: () => ({ name: "Your Page", avatar: null }) };
+                      const loc = previewLocation ? MOCK_LOCATIONS.find(l => l.id === previewLocation) : null;
+                      const profile = chInfo.getProfile(loc);
+                      const resolvedContent = resolveTokens(postContent, loc);
+                      const PreviewComp = CHANNEL_PREVIEW_MAP[ch] || GenericChannelPreview;
+                      return (
+                        <div key={ch}>
+                          {/* Channel accordion header */}
+                          <button onClick={() => toggleChannelExpand(ch)} style={{
+                            width: "100%", display: "flex", alignItems: "center", gap: "8px", padding: "10px 0",
+                            background: "none", border: "none", cursor: "pointer", textAlign: "left",
+                          }}>
+                            <ChannelIcon type={ch} />
+                            <span style={{ fontSize: "13px", fontWeight: 500, color: T.gray800, textTransform: "capitalize" }}>
+                              {CHANNEL_LIMITS[ch]?.label || ch}
+                            </span>
+                            <span style={{ fontSize: "13px", color: T.blue }}>{chInfo.countLabel}</span>
+                            <div style={{ flex: 1 }} />
+                            {isExpanded ? <ChevronUp size={16} color={T.gray400} /> : <ChevronDown size={16} color={T.gray400} />}
+                          </button>
+                          {/* Channel preview body */}
+                          {isExpanded && (
+                            <div style={{ marginBottom: "8px" }}>
+                              <PreviewComp
+                                content={resolvedContent}
+                                profile={profile}
+                                brand={brands[0]}
+                                selectedMedia={selectedMedia}
+                                channel={ch}
+                              />
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "60px 20px", color: T.gray400 }}>
+                    <div style={{ width: 80, height: 60, background: T.gray100, borderRadius: T.radius, marginBottom: "12px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                      <Monitor size={24} color={T.gray300} />
+                    </div>
+                    <p style={{ fontSize: "13px", textAlign: "center" }}>Select a channel and start creating a post to see a preview.</p>
+                  </div>
+                )}
+              </div>
             </div>
           )}
 
@@ -2194,6 +3091,19 @@ function CreatePostPage({ brands, onNavigate }) {
               channels={channels}
               selectedMedia={selectedMedia}
               onOpenSettings={() => { setRightTab("preview"); onNavigate("brand-identity"); }}
+            />
+          )}
+
+          {/* AI Drawer tab content */}
+          {rightTab === "ai" && (
+            <AIDrawerContent
+              brands={brands}
+              postContent={postContent}
+              channels={channels}
+              selectedMedia={selectedMedia}
+              onInsert={(content) => setPostContent(content)}
+              onInsertMedia={(img) => setSelectedMedia(prev => [...prev, img])}
+              onBack={() => setRightTab("preview")}
             />
           )}
         </div>
